@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Bishop.Model.Entities;
-
-namespace Bishop.Model.Tests.ObjectMother
+﻿namespace Bishop.Model.Tests.ObjectMother
 {
-    class SurveyObjectMother : ObjectMother<Survey>
+    using Bishop.Model.Entities;
+
+    public class SurveyObjectMother : ObjectMother<Survey>
     {
-        public override void Instantiate()
+        public override Survey CreateInstance()
         {
-            this.instance = new Survey();
+            return new Survey();
+        }
+
+        public SurveyObjectMother WithTopic(Topic topic)
+        {
+            this.Instance.AddTopic(topic);
+            return this;
         }
     }
 }

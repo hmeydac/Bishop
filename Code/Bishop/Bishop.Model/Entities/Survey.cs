@@ -1,32 +1,43 @@
 ﻿namespace Bishop.Model.Entities
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
+    using Bishop.Framework.Exceptions;
 
     public class Survey
     {
-        private List<Question> questions;
+        private readonly List<Topic> topics;
 
         public Survey()
         {
-            this.questions = new List<Question>();
+            this.topics = new List<Topic>();
             this.Title = string.Empty;
         }
 
+        [Key]
         public long Id { get; set; }
 
         public string Title { get; set; }
 
-        public IEnumerable<Question> Questions
+        public IEnumerable<Topic> Topics
         {
-            get
-            {
-                return this.questions;
-            }
+            get { return this.topics; }
         }
 
-        public void AddQuestion(Question question)
+        public void AddTopic(Topic topic)
         {
-            this.questions.Add(question);
+            this.topics.Add(topic);
+        }
+
+        public void RemoveTopic(Topic topic)
+        {
+            if (!this.topics.Contains(topic))
+            {
+                throw new NotFoundException("Could not find Topic to remove.");
+            }
+
+            this.topics.Remove(topic);
         }
     }
 }

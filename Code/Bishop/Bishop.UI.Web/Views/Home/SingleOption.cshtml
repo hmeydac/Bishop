@@ -1,0 +1,12 @@
+﻿@using Bishop.Model.Entities
+@model Question
+
+<h5>@this.Model.Text</h5>
+@{
+    foreach (var answer in this.Model.Answers)
+    {
+    @Html.RadioButton(this.Model.Id.ToString(), answer.Text)
+    <label>@answer.Text</label>
+    }
+}
+

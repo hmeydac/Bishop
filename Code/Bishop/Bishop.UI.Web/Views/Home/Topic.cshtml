@@ -1,0 +1,12 @@
+﻿@using Bishop.Model.Entities
+@model Bishop.Model.Entities.Topic
+
+<h3>@this.Model.Title</h3>
+
+@{
+    foreach (var question in this.Model.Questions)
+    {
+        var partialViewName = Enum.GetName(typeof(QuestionTypes), question.QuestionType);
+        Html.RenderPartial(partialViewName, question);
+    }
+}

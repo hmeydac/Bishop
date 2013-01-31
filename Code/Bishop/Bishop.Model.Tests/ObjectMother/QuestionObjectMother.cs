@@ -1,22 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Bishop.Model.Entities;
-
-namespace Bishop.Model.Tests.ObjectMother
+﻿namespace Bishop.Model.Tests.ObjectMother
 {
-    class QuestionObjectMother : ObjectMother<Question>
+    using Bishop.Model.Entities;
+
+    public class QuestionObjectMother : ObjectMother<Question>
     {
-        public override void Instantiate()
+        public override Question CreateInstance()
         {
-            this.instance = new Question();
+            return new Question();
         }
 
         public QuestionObjectMother WithText(string text)
         {
-            this.instance.Text = text;
+            this.Instance.Text = text;
+            return this;
+        }
+
+        public QuestionObjectMother WithAnswer(Answer answer)
+        {
+            this.Instance.AddAnswer(answer);
             return this;
         }
     }

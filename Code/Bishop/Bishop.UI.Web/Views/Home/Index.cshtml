@@ -1,0 +1,14 @@
+﻿@model Bishop.Model.Entities.Survey
+@{
+    ViewBag.Title = "Index";
+}
+
+<div id="main-container">
+    <h1>Cuestionario</h1>
+    @{
+        foreach (var topic in this.Model.Topics)
+        {
+            Html.RenderPartial("Topic", topic);
+        }
+    }
+</div>

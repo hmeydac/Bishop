@@ -1,25 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Bishop.Model.Tests.ObjectMother
+﻿namespace Bishop.Model.Tests.ObjectMother
 {
-    abstract class ObjectMother<T> 
+    public abstract class ObjectMother<T>
     {
-        protected T instance;
+        private readonly T instance;
 
-        public ObjectMother()
+        protected ObjectMother()
         {
-            this.Instantiate();
+            this.instance = this.CreateInstance();
         }
 
-        public abstract void Instantiate();        
+        protected T Instance
+        {
+            get
+            {
+                return this.instance;
+            }
+        }
 
-        public T Get()
-        { 
-            return this.instance; 
+        public abstract T CreateInstance();
+
+        public T Build()
+        {
+            return this.Instance;
         }
     }
 }

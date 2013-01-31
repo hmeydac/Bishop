@@ -1,0 +1,12 @@
+﻿body {
+    font-family: 'Segoe UI';
+    margin: 0;
+}
+
+h1 {
+    font-weight: 100;
+}
+
+#main-container {
+    margin-left: 15px;
+}
