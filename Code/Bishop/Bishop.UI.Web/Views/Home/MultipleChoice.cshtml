@@ -1,12 +1,8 @@
-﻿@using Bishop.Model.Entities
-@model Question
+﻿@using Bishop.UI.Web.Models.Forms
+@model QuestionViewModel
 
-<h5>@this.Model.Text</h5>
-
-@{
-    foreach (var answer in this.Model.Answers)
-    {
-        @Html.CheckBox(answer.Text);
-        <label>@answer.Text</label>
-    }
+@for (var answerIndex = 0; answerIndex < this.Model.UserForm.Topics[this.Model.TopicIndex].Questions[this.Model.QuestionIndex].Answers.Count; answerIndex++)
+{            
+    @Html.CheckBoxFor(m => m.UserForm.Topics[this.Model.TopicIndex].Questions[this.Model.QuestionIndex].Answers[answerIndex].IsChecked)
+    <label>@this.Model.UserForm.Topics[this.Model.TopicIndex].Questions[this.Model.QuestionIndex].Answers[answerIndex].Text</label>
 }

@@ -11,13 +11,11 @@
         }
 
         [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public string Text { get; set; }
 
         public bool IsCorrectAnswer { get; set; }
-
-        public bool IsChecked { get; set; }
 
         public double Weight { get; set; }
     }

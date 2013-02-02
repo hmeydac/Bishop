@@ -1,6 +1,4 @@
-﻿@using Bishop.Model.Entities
-@model Question
+﻿@using Bishop.UI.Web.Models.Forms
+@model QuestionViewModel
 
-<h5>@this.Model.Text</h5>
-
-@Html.TextArea("freeText")
+@Html.TextAreaFor(m => m.UserForm.Topics[this.Model.TopicIndex].Questions[this.Model.QuestionIndex].SelectedAnswer)

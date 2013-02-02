@@ -1,14 +1,28 @@
-﻿@model Bishop.Model.Entities.Survey
+﻿@using Bishop.UI.Web.Models.Forms
+
+@model UserForm
 @{
     ViewBag.Title = "Index";
 }
 
 <div id="main-container">
-    <h1>Cuestionario</h1>
-    @{
-        foreach (var topic in this.Model.Topics)
+    @using (Html.BeginForm())
+    {   
+        <h1>@this.Model.Title</h1>    
+        for (int topicIndex = 0; topicIndex < this.Model.Topics.Count; topicIndex++)
         {
-            Html.RenderPartial("Topic", topic);
+        <h3>@this.Model.Topics[topicIndex].Title</h3>
+            for (int questionIndex = 0; questionIndex < this.Model.Topics[topicIndex].Questions.Count; questionIndex++)
+            {
+                var question = this.Model.Topics[topicIndex].Questions[questionIndex];
+        <h5>@question.Text</h5>
+        <div>
+            @{var partialViewName = Enum.GetName(typeof(QuestionTypes), question.QuestionType);
+              Html.RenderPartial(partialViewName, new QuestionViewModel { UserForm = this.Model, TopicIndex = topicIndex, QuestionIndex = questionIndex });
+            }
+        </div>
+            }
         }
+        <input type="submit" value="save" />
     }
 </div>

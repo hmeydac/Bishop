@@ -1,12 +1,10 @@
-﻿@using Bishop.Model.Entities
-@model Question
+﻿@using Bishop.UI.Web.Models.Forms
+@model QuestionViewModel
 
-<h5>@this.Model.Text</h5>
-@{
-    foreach (var answer in this.Model.Answers)
-    {
-    @Html.RadioButton(this.Model.Id.ToString(), answer.Text)
-    <label>@answer.Text</label>
-    }
+@foreach (var possibleAnswer in this.Model.UserForm.Topics[this.Model.TopicIndex].Questions[this.Model.QuestionIndex].Answers)
+{                    
+    @Html.RadioButtonFor(m => m.UserForm.Topics[this.Model.TopicIndex].Questions[this.Model.QuestionIndex].SelectedAnswer, possibleAnswer.Text);
+    <label>@possibleAnswer.Text</label>
 }
+
 

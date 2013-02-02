@@ -3,15 +3,41 @@
     using System.Collections.Generic;
     using System.Web.Mvc;
 
+    using AutoMapper;
+
     using Bishop.Model.Entities;
+    using Bishop.UI.Web.Models.Forms;
+
+    using Answer = Bishop.Model.Entities.Answer;
+    using Question = Bishop.Model.Entities.Question;
+    using QuestionTypes = Bishop.Model.Entities.QuestionTypes;
+    using Topic = Bishop.Model.Entities.Topic;
 
     public class HomeController : Controller
     {
         // GET: /Home/
         public ActionResult Index()
         {
-            var fake = this.GetFakeSurveyData();
-            return View(fake);
+            var formData = this.GetFakeSurveyData();
+            var viewModel = this.ConstructViewModel(formData);
+            return this.View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Index(UserForm formData)
+        {
+            // TODO: Save form data into database.
+
+            // Remove: Re-loading form with same data
+            var data = this.GetFakeSurveyData();
+            var viewModel = this.ConstructViewModel(data);
+            return this.View(viewModel);
+        }
+
+        private UserForm ConstructViewModel(Survey formData)
+        {
+            var userForm = Mapper.Map<UserForm>(formData);
+            return userForm;
         }
 
         private Survey GetFakeSurveyData()
@@ -24,11 +50,11 @@
             var question = new Question { Id = 1, Text = "Comunicación con el Cliente" };
             var answers = new List<Answer>
                               {
-                                  new Answer { Text = "1" },
-                                  new Answer { Text = "2" },
-                                  new Answer { Text = "3" },
-                                  new Answer { Text = "4" },
-                                  new Answer { Text = "5" },
+                                  new Answer { Id = 1, Text = "1" },
+                                  new Answer { Id = 2, Text = "2" },
+                                  new Answer { Id = 3, Text = "3" },
+                                  new Answer { Id = 4, Text = "4" },
+                                  new Answer { Id = 5, Text = "5" },
                               };
 
             answers.ForEach(question.AddAnswer);
@@ -37,13 +63,13 @@
 
             question = new Question { Id = 2, Text = "Autonomía en el trabajo" };
             answers = new List<Answer>
-                              {
-                                  new Answer { Text = "1" },
-                                  new Answer { Text = "2" },
-                                  new Answer { Text = "3" },
-                                  new Answer { Text = "4" },
-                                  new Answer { Text = "5" },
-                              };
+                          {
+                              new Answer { Id = 6, Text = "1" },
+                              new Answer { Id = 7, Text = "2" },
+                              new Answer { Id = 8, Text = "3" },
+                              new Answer { Id = 9, Text = "4" },
+                              new Answer { Id = 10, Text = "5" },
+                          };
 
             answers.ForEach(question.AddAnswer);
             coreTopic.AddQuestion(question);

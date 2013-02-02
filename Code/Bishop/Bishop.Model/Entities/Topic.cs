@@ -16,7 +16,7 @@ namespace Bishop.Model.Entities
         }
 
         [Key]
-        public int Id { get; set; }
+        public double Id { get; set; }
 
         public string Title { get; set; }
 

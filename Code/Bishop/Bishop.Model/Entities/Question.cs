@@ -16,7 +16,7 @@
         }
 
         [Key]
-        public int Id { get; set; }
+        public double Id { get; set; }
 
         public string Text { get; set; }
 
@@ -29,8 +29,6 @@
         }
 
         public QuestionTypes QuestionType { get; set; }
-
-        public int SelectedAnswer { get; set; }
 
         public void AddAnswer(Answer answer)
         {
