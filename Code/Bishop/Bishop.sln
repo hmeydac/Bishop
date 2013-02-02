@@ -19,6 +19,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bishop.UI.Web", "Bishop.UI.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bishop.UI.Web.Tests", "Bishop.UI.Web.Tests\Bishop.UI.Web.Tests.csproj", "{01021181-FD1C-46BB-BCCD-454920F4EB3D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{7A4C41A2-300A-4CD2-8A06-6625F39CC8D2}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,9 +57,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{DC5A73B2-5794-462A-912B-AF2599A3E9E1} = {9798E8DD-5E30-41E0-8042-5B002FD00B8B}
 		{63AC7C15-EE34-4F45-8ED7-75E9F7B0AC2C} = {B41E822F-E13D-41D3-9C56-90D0BA219343}
 		{01021181-FD1C-46BB-BCCD-454920F4EB3D} = {B41E822F-E13D-41D3-9C56-90D0BA219343}
+		{DC5A73B2-5794-462A-912B-AF2599A3E9E1} = {9798E8DD-5E30-41E0-8042-5B002FD00B8B}
 		{03EC71B8-628E-4392-BE2B-AE65F65A9887} = {F97C3671-42D3-445C-9131-46147D830474}
 		{6738F473-FC22-4C24-952C-84D45F480F98} = {91BF9323-8E6C-4780-8E83-B79B817415A9}
 	EndGlobalSection
