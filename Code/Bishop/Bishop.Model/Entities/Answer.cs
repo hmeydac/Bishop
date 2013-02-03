@@ -1,6 +1,7 @@
 ﻿namespace Bishop.Model.Entities
 {
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class Answer
     {

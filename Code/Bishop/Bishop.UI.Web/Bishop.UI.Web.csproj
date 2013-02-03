@@ -127,6 +127,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\FormController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -224,9 +225,10 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\SingleOption.cshtml" />
-    <Content Include="Views\Home\MultipleChoice.cshtml" />
-    <Content Include="Views\Home\FreeText.cshtml" />
+    <Content Include="Views\Form\SingleOption.cshtml" />
+    <Content Include="Views\Form\MultipleChoice.cshtml" />
+    <Content Include="Views\Form\FreeText.cshtml" />
+    <Content Include="Views\Form\Template.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
@@ -236,9 +238,21 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Bishop.Framework\Bishop.Framework.csproj">
+      <Project>{03EC71B8-628E-4392-BE2B-AE65F65A9887}</Project>
+      <Name>Bishop.Framework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bishop.Model\Bishop.Model.csproj">
       <Project>{DC5A73B2-5794-462A-912B-AF2599A3E9E1}</Project>
       <Name>Bishop.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bishop.Repositories\Bishop.Repositories.csproj">
+      <Project>{C9E55A74-9033-46B1-B648-FD08A8A27C7B}</Project>
+      <Name>Bishop.Repositories</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bishop.Services\Bishop.Services.csproj">
+      <Project>{5D30FF21-30C0-4D6B-9F1D-13AEF59EEC03}</Project>
+      <Name>Bishop.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

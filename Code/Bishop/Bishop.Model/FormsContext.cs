@@ -4,9 +4,9 @@
 
     using Bishop.Model.Entities;
 
-    public class SurveyContext : DbContext
+    public class FormsContext : DbContext
     {
-        public DbSet<Survey> Surveys { get; set; }
+        public DbSet<Form> Forms { get; set; }
 
         public DbSet<Topic> Topics { get; set; }
 

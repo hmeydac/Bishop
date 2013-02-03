@@ -1,12 +1,11 @@
 ﻿namespace Bishop.Model.Tests
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     using Bishop.Framework.Exceptions;
     using Bishop.Model.Entities;
-    using Bishop.Model.Tests.ObjectMother;
+    using Bishop.Tests.ObjectMothers;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -90,7 +89,7 @@
             var answer = new AnswerObjectMother().WithText(expectedAnswerTitle).Build();
 
             // Act
-            question.AddAnswer(answer);
+            question.Answers.Add(answer);
             var actualCount = question.Answers.Count();
             var actualAnswer = question.Answers.FirstOrDefault();
 
@@ -108,7 +107,7 @@
             var question = new QuestionObjectMother().WithAnswer(answer).Build();
 
             // Act
-            question.RemoveAnswer(answer);
+            question.Answers.Remove(answer);
             var actualCount = question.Answers.Count();
             var actualAnswer = question.Answers.FirstOrDefault();
 
@@ -118,17 +117,18 @@
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NotFoundException))]
         public void RemoveInexistentAnswerShouldFail()
         {
             // Arrange
-            var expectedCount = 1;
             var falseAnswer = new AnswerObjectMother().Build();
             var answer = new AnswerObjectMother().Build();
             var question = new QuestionObjectMother().WithAnswer(answer).Build();
 
             // Act
-            question.RemoveAnswer(falseAnswer);
+            var actual = question.Answers.Remove(falseAnswer);
+
+            // Assert
+            Assert.IsFalse(actual);
         }
     }
 }

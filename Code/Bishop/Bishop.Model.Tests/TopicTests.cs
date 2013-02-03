@@ -6,7 +6,7 @@
 
     using Bishop.Framework.Exceptions;
     using Bishop.Model.Entities;
-    using Bishop.Model.Tests.ObjectMother;
+    using Bishop.Tests.ObjectMothers;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -73,7 +73,7 @@
             var question = new QuestionObjectMother().WithText(expectedQuestionTitle).Build();
 
             // Act
-            topic.AddQuestion(question);
+            topic.Questions.Add(question);
             var actualCount = topic.Questions.Count();
             var actualQuestion = topic.Questions.FirstOrDefault();
 
@@ -91,7 +91,7 @@
             var topic = new TopicObjectMother().WithQuestion(question).Build();
 
             // Act
-            topic.RemoveQuestion(question);
+            topic.Questions.Remove(question);
             var actualCount = topic.Questions.Count();
             var actualQuestion = topic.Questions.FirstOrDefault();
 
@@ -101,7 +101,6 @@
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NotFoundException))]
         public void RemoveInexistentQuestionShouldFail()
         {
             // Arrange
@@ -111,19 +110,10 @@
             var topic = new TopicObjectMother().WithQuestion(question).Build();
 
             // Act
-            try
-            {
-                topic.RemoveQuestion(falseQuestion);
-            }
-            catch (Exception)
-            {
-                // Assert
-                Assert.AreEqual(expectedCount, topic.Questions.Count());
-                Assert.AreSame(question, topic.Questions.FirstOrDefault());
-                throw;
-            }
-
-            Assert.Fail();
+           var actual = topic.Questions.Remove(falseQuestion);
+            
+            // Assert
+            Assert.IsFalse(actual);
         }
     }
 }

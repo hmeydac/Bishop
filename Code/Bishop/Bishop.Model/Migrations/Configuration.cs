@@ -1,13 +1,31 @@
 namespace Bishop.Model.Migrations
 {
+    using System;
+    using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<SurveyContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Bishop.Model.FormsContext>
     {
         public Configuration()
         {
-            // TODO: Remove this in Production
-            this.AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
+        }
+
+        protected override void Seed(Bishop.Model.FormsContext context)
+        {
+            //  This method will be called after migrating to the latest version.
+
+            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
+            //  to avoid creating duplicate seed data. E.g.
+            //
+            //    context.People.AddOrUpdate(
+            //      p => p.FullName,
+            //      new Person { FullName = "Andrew Peters" },
+            //      new Person { FullName = "Brice Lambson" },
+            //      new Person { FullName = "Rowan Miller" }
+            //    );
+            //
         }
     }
 }

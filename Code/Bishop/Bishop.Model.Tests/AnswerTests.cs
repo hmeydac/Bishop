@@ -1,8 +1,7 @@
 ﻿namespace Bishop.Model.Tests
 {
     using Bishop.Model.Entities;
-    using Bishop.Model.Tests.ObjectMother;
-
+    using Bishop.Tests.ObjectMothers;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]

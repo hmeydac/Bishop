@@ -1,4 +1,4 @@
-﻿namespace Bishop.Model.Tests.ObjectMother
+﻿namespace Bishop.Tests.ObjectMothers
 {
     using Bishop.Model.Entities;
 
@@ -17,7 +17,7 @@
 
         public TopicObjectMother WithQuestion(Question question)
         {
-            this.Instance.AddQuestion(question);
+            this.Instance.Questions.Add(question);
             return this;
         }
     }

@@ -1,4 +1,4 @@
-﻿namespace Bishop.Model.Tests.ObjectMother
+﻿namespace Bishop.Tests.ObjectMothers
 {
     using Bishop.Model.Entities;
 

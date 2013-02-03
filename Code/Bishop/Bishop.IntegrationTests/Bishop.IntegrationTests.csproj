@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{63AC7C15-EE34-4F45-8ED7-75E9F7B0AC2C}</ProjectGuid>
+    <ProjectGuid>{648D4A51-DB6A-4446-970D-880B7F3D1479}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Bishop.Model.Tests</RootNamespace>
-    <AssemblyName>Bishop.Model.Tests</AssemblyName>
+    <RootNamespace>Bishop.IntegrationTests</RootNamespace>
+    <AssemblyName>Bishop.IntegrationTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,9 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework">
+      <HintPath>..\Bishop.Model.Tests\bin\Debug\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -54,24 +53,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AnswerTests.cs" />
-    <Compile Include="QuestionTests.cs" />
-    <Compile Include="FormTests.cs" />
+    <Compile Include="DataGenerationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TopicTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Bishop.Framework\Bishop.Framework.csproj">
-      <Project>{03EC71B8-628E-4392-BE2B-AE65F65A9887}</Project>
-      <Name>Bishop.Framework</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Bishop.Model\Bishop.Model.csproj">
-      <Project>{dc5a73b2-5794-462a-912b-af2599a3e9e1}</Project>
+      <Project>{DC5A73B2-5794-462A-912B-AF2599A3E9E1}</Project>
       <Name>Bishop.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Bishop.Tests.ObjectMothers\Bishop.Tests.ObjectMothers.csproj">
-      <Project>{E8A996D4-AB37-4313-A3DE-7E55888C174A}</Project>
-      <Name>Bishop.Tests.ObjectMothers</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

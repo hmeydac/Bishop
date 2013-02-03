@@ -34,15 +34,15 @@
             return this.View(viewModel);
         }
 
-        private UserForm ConstructViewModel(Survey formData)
+        private UserForm ConstructViewModel(Form formData)
         {
             var userForm = Mapper.Map<UserForm>(formData);
             return userForm;
         }
 
-        private Survey GetFakeSurveyData()
+        private Form GetFakeSurveyData()
         {
-            var survey = new Survey { Title = "Performance Review" };
+            var survey = new Form { Title = "Performance Review" };
 
             // Competencias Core
             var coreTopic = new Topic { Title = "Competencias Core" };
@@ -57,9 +57,9 @@
                                   new Answer { Id = 5, Text = "5" },
                               };
 
-            answers.ForEach(question.AddAnswer);
+            answers.ForEach(question.Answers.Add);
 
-            coreTopic.AddQuestion(question);
+            coreTopic.Questions.Add(question);
 
             question = new Question { Id = 2, Text = "Autonomía en el trabajo" };
             answers = new List<Answer>
@@ -71,8 +71,8 @@
                               new Answer { Id = 10, Text = "5" },
                           };
 
-            answers.ForEach(question.AddAnswer);
-            coreTopic.AddQuestion(question);
+            answers.ForEach(question.Answers.Add);
+            coreTopic.Questions.Add(question);
 
             // Competencias Tecnicas
             var technicalTopic = new Topic { Title = "Competencias Técnicas" };
@@ -87,12 +87,12 @@
                                   new Answer { Text = "4.5" },
                               };
 
-            answers.ForEach(question.AddAnswer);
-            technicalTopic.AddQuestion(question);
+            answers.ForEach(question.Answers.Add);
+            technicalTopic.Questions.Add(question);
 
             question = new Question { Id = 4, Text = "Indique los últimos 3 proyectos que ha trabajado", QuestionType = QuestionTypes.FreeText };
 
-            technicalTopic.AddQuestion(question);
+            technicalTopic.Questions.Add(question);
 
             // Topics
             var topics = new List<Topic>
@@ -101,7 +101,7 @@
                                 technicalTopic
                              };
 
-            topics.ForEach(survey.AddTopic);
+            topics.ForEach(survey.Topics.Add);
             return survey;
         }
     }

@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     using Bishop.Framework.Exceptions;
 
@@ -16,11 +17,11 @@
         }
 
         [Key]
-        public double Id { get; set; }
+        public long Id { get; set; }
 
         public string Text { get; set; }
 
-        public IEnumerable<Answer> Answers
+        public IList<Answer> Answers
         {
             get
             {
@@ -29,20 +30,5 @@
         }
 
         public QuestionTypes QuestionType { get; set; }
-
-        public void AddAnswer(Answer answer)
-        {
-            this.answers.Add(answer);
-        }
-
-        public void RemoveAnswer(Answer answer)
-        {
-            if (!this.answers.Contains(answer))
-            {
-                throw new NotFoundException("Could not find Topic to remove.");
-            }
-
-            this.answers.Remove(answer);
-        }
     }
 }

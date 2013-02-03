@@ -1,4 +1,4 @@
-﻿namespace Bishop.Model.Tests.ObjectMother
+﻿namespace Bishop.Tests.ObjectMothers
 {
     public abstract class ObjectMother<T>
     {

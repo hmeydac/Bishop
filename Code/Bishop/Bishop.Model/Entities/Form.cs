@@ -5,11 +5,11 @@
 
     using Bishop.Framework.Exceptions;
 
-    public class Survey
+    public class Form
     {
         private readonly List<Topic> topics;
 
-        public Survey()
+        public Form()
         {
             this.topics = new List<Topic>();
             this.Title = string.Empty;
@@ -20,24 +20,9 @@
 
         public string Title { get; set; }
 
-        public IEnumerable<Topic> Topics
+        public IList<Topic> Topics
         {
             get { return this.topics; }
-        }
-
-        public void AddTopic(Topic topic)
-        {
-            this.topics.Add(topic);
-        }
-
-        public void RemoveTopic(Topic topic)
-        {
-            if (!this.topics.Contains(topic))
-            {
-                throw new NotFoundException("Could not find Topic to remove.");
-            }
-
-            this.topics.Remove(topic);
         }
     }
 }

@@ -24,7 +24,7 @@
 
         private void MapModels()
         {
-            Mapper.CreateMap<Survey, Models.Forms.UserForm>();
+            Mapper.CreateMap<Form, Models.Forms.UserForm>();
             Mapper.CreateMap<Topic, Models.Forms.Topic>();
             Mapper.CreateMap<Question, Models.Forms.Question>();
             Mapper.CreateMap<Answer, Models.Forms.Answer>();
