@@ -1,108 +1,105 @@
 ﻿namespace Bishop.UI.Web.Controllers
 {
-    using System.Collections.Generic;
+    using System.Linq;
     using System.Web.Mvc;
 
-    using AutoMapper;
-
+    using Bishop.Model;
     using Bishop.Model.Entities;
-    using Bishop.UI.Web.Models.Forms;
-
-    using Answer = Bishop.Model.Entities.Answer;
-    using Question = Bishop.Model.Entities.Question;
-    using QuestionTypes = Bishop.Model.Entities.QuestionTypes;
-    using Topic = Bishop.Model.Entities.Topic;
 
     public class HomeController : Controller
     {
         // GET: /Home/
         public ActionResult Index()
         {
-            var formData = this.GetFakeSurveyData();
-            var viewModel = this.ConstructViewModel(formData);
-            return this.View(viewModel);
+            return this.View();
         }
 
-        [HttpPost]
-        public ActionResult Index(UserForm formData)
+        public ActionResult GenerateData()
         {
-            // TODO: Save form data into database.
+            // Act
+            var context = new FormsContext();
 
-            // Remove: Re-loading form with same data
-            var data = this.GetFakeSurveyData();
-            var viewModel = this.ConstructViewModel(data);
-            return this.View(viewModel);
+            // Clear existing data
+            context.Answers.ToList().ForEach(answer => context.Answers.Remove(answer));
+            context.Questions.ToList().ForEach(question => context.Questions.Remove(question));
+            context.Topics.ToList().ForEach(topic => context.Topics.Remove(topic));
+            context.Forms.ToList().ForEach(form => context.Forms.Remove(form));
+
+            // Add Default Sample Data
+            this.SaveData(context);
+
+            return this.View();
         }
 
-        private UserForm ConstructViewModel(Form formData)
+        private void SaveData(FormsContext context)
         {
-            var userForm = Mapper.Map<UserForm>(formData);
-            return userForm;
+            var form = new Form { Title = "Performance Review" };
+            var topic = new Topic { Title = "Competencias Core" };
+            form.Topics.Add(topic);
+            topic.Questions.Add(this.GetQuestion("Comunicación con sus pares"));
+            topic.Questions.Add(this.GetQuestion("Comunicación con el cliente"));
+            topic.Questions.Add(this.GetQuestion("Administración de sus tareas"));
+            topic.Questions.Add(this.GetQuestion("Cumplimiento de tareas"));
+
+            topic = new Topic { Title = "Competencias Técnicas" };
+            form.Topics.Add(topic);
+            topic.Questions.Add(this.GetQuestion("Conocimiento Técnico"));
+            topic.Questions.Add(this.GetQuestion("Resolución de Problemas Complejos"));
+            topic.Questions.Add(this.GetNetChoiceQuestion("Versiones de .NET Trabajadas"));
+            topic.Questions.Add(this.GetPlatformChoiceQuestion("Plataformas Trabajadas"));
+
+            topic = new Topic { Title = "Feedback" };
+            form.Topics.Add(topic);
+            topic.Questions.Add(this.GetFreeTextQuestion("Relación con el manager"));
+            topic.Questions.Add(this.GetFreeTextQuestion("Relación con sus pares"));
+            topic.Questions.Add(this.GetFreeTextQuestion("Qué opinas de la empresa?"));
+
+            context.Forms.Add(form);
+            context.SaveChanges();
         }
 
-        private Form GetFakeSurveyData()
+        private Question GetFreeTextQuestion(string questionText)
         {
-            var survey = new Form { Title = "Performance Review" };
+            var question = new Question { Text = questionText, QuestionType = QuestionTypes.FreeText };
+            return question;
+        }
 
-            // Competencias Core
-            var coreTopic = new Topic { Title = "Competencias Core" };
+        private Question GetPlatformChoiceQuestion(string questionText)
+        {
+            var question = new Question { Text = questionText, QuestionType = QuestionTypes.MultipleChoice };
+            question.Answers.Add(new Answer { Text = "Desktop" });
+            question.Answers.Add(new Answer { Text = "Web" });
+            question.Answers.Add(new Answer { Text = "Mainframe" });
+            question.Answers.Add(new Answer { Text = "Mobile" });
+            question.Answers.Add(new Answer { Text = "Otros" });
+            return question;
+        }
 
-            var question = new Question { Id = 1, Text = "Comunicación con el Cliente" };
-            var answers = new List<Answer>
-                              {
-                                  new Answer { Id = 1, Text = "1" },
-                                  new Answer { Id = 2, Text = "2" },
-                                  new Answer { Id = 3, Text = "3" },
-                                  new Answer { Id = 4, Text = "4" },
-                                  new Answer { Id = 5, Text = "5" },
-                              };
+        private Question GetNetChoiceQuestion(string questionText)
+        {
+            var question = new Question { Text = questionText, QuestionType = QuestionTypes.MultipleChoice };
+            question.Answers.Add(new Answer { Text = "1.1" });
+            question.Answers.Add(new Answer { Text = "2.0" });
+            question.Answers.Add(new Answer { Text = "3.5" });
+            question.Answers.Add(new Answer { Text = "4" });
+            question.Answers.Add(new Answer { Text = "4.5" });
+            return question;
+        }
 
-            answers.ForEach(question.Answers.Add);
+        private Question GetQuestion(string questionText)
+        {
+            var question = new Question { Text = questionText };
+            this.SetDefaultAnswers(question);
+            return question;
+        }
 
-            coreTopic.Questions.Add(question);
-
-            question = new Question { Id = 2, Text = "Autonomía en el trabajo" };
-            answers = new List<Answer>
-                          {
-                              new Answer { Id = 6, Text = "1" },
-                              new Answer { Id = 7, Text = "2" },
-                              new Answer { Id = 8, Text = "3" },
-                              new Answer { Id = 9, Text = "4" },
-                              new Answer { Id = 10, Text = "5" },
-                          };
-
-            answers.ForEach(question.Answers.Add);
-            coreTopic.Questions.Add(question);
-
-            // Competencias Tecnicas
-            var technicalTopic = new Topic { Title = "Competencias Técnicas" };
-
-            question = new Question { Id = 3, Text = "Qué versiones de .NET ha trabajado?", QuestionType = QuestionTypes.MultipleChoice };
-            answers = new List<Answer>
-                              {
-                                  new Answer { Text = "1.1" },
-                                  new Answer { Text = "2.0" },
-                                  new Answer { Text = "3.5" },
-                                  new Answer { Text = "4" },
-                                  new Answer { Text = "4.5" },
-                              };
-
-            answers.ForEach(question.Answers.Add);
-            technicalTopic.Questions.Add(question);
-
-            question = new Question { Id = 4, Text = "Indique los últimos 3 proyectos que ha trabajado", QuestionType = QuestionTypes.FreeText };
-
-            technicalTopic.Questions.Add(question);
-
-            // Topics
-            var topics = new List<Topic>
-                             {
-                                coreTopic,
-                                technicalTopic
-                             };
-
-            topics.ForEach(survey.Topics.Add);
-            return survey;
+        private void SetDefaultAnswers(Question question)
+        {
+            question.Answers.Add(new Answer { Text = "1" });
+            question.Answers.Add(new Answer { Text = "2" });
+            question.Answers.Add(new Answer { Text = "3" });
+            question.Answers.Add(new Answer { Text = "4" });
+            question.Answers.Add(new Answer { Text = "5" });
         }
     }
 }
