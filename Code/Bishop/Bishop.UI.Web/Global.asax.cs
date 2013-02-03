@@ -8,6 +8,7 @@
     using AutoMapper;
 
     using Bishop.Model.Entities;
+    using Bishop.UI.Web.App_Start;
 
     public class MvcApplication : System.Web.HttpApplication
     {
@@ -19,6 +20,7 @@
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            DontDropDbJustCreateTablesIfModelChangedStart.Start();
             this.MapModels();
         }
 
