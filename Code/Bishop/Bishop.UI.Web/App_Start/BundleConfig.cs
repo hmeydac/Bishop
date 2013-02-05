@@ -37,6 +37,8 @@
                         "~/Content/themes/base/jquery.ui.datepicker.css",
                         "~/Content/themes/base/jquery.ui.progressbar.css",
                         "~/Content/themes/base/jquery.ui.theme.css"));
+
+            bundles.Add(new StyleBundle("~/Content/themes/classic/css").Include("~/Content/themes/classic/form.css"));
         }
     }
 }

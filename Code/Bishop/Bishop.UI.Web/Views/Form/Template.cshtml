@@ -5,24 +5,35 @@
     ViewBag.Title = "Bishop";
 }
 
-<div id="main-container">
+<div class="form-container">
     @using (Html.BeginForm())
     {   
-        <h1>@this.Model.Title</h1>    
-        for (int topicIndex = 0; topicIndex < this.Model.Topics.Count; topicIndex++)
-        {
-        <h3>@this.Model.Topics[topicIndex].Title</h3>
-            for (int questionIndex = 0; questionIndex < this.Model.Topics[topicIndex].Questions.Count; questionIndex++)
-            {
-                var question = this.Model.Topics[topicIndex].Questions[questionIndex];
-        <h5>@question.Text</h5>
-        <div>
-            @{var partialViewName = Enum.GetName(typeof(QuestionTypes), question.QuestionType);
-              Html.RenderPartial(partialViewName, new QuestionViewModel { UserForm = this.Model, TopicIndex = topicIndex, QuestionIndex = questionIndex });
-            }
+        <div class="form-header">
+            <h1>@this.Model.Title</h1>
         </div>
+        <div class="form-content">
+            @for (int topicIndex = 0; topicIndex < this.Model.Topics.Count; topicIndex++)
+            {
+                <h3>@this.Model.Topics[topicIndex].Title</h3>
+                for (int questionIndex = 0; questionIndex < this.Model.Topics[topicIndex].Questions.Count; questionIndex++)
+                {
+                    var question = this.Model.Topics[topicIndex].Questions[questionIndex];
+                <div class="form-choice">
+                    <h5>@question.Text</h5>
+                    <div>
+                        @{var partialViewName = Enum.GetName(typeof(QuestionTypes), question.QuestionType);
+                          Html.RenderPartial(partialViewName, new QuestionViewModel { UserForm = this.Model, TopicIndex = topicIndex, QuestionIndex = questionIndex });
+                        }
+                    </div>
+                </div>
+                }
             }
-        }
-        <input type="submit" value="save" />
+            <input type="submit" value="Save" />
+        </div>
+        
     }
 </div>
+
+@section scripts{
+    @Styles.Render("~/Content/themes/classic/css")
+}

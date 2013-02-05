@@ -18,7 +18,6 @@
             }
 
             this.dataSet = entityFrameworkUnitOfWork.GetDbSet<TEntity>();
-
         }
 
         public void Add(TEntity entity)
