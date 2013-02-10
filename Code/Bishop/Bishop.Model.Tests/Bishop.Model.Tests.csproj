@@ -59,6 +59,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AnswerTests.cs" />
+    <Compile Include="FillingSessionTests.cs" />
     <Compile Include="QuestionTests.cs" />
     <Compile Include="FormTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -73,9 +74,9 @@
       <Project>{dc5a73b2-5794-462a-912b-af2599a3e9e1}</Project>
       <Name>Bishop.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bishop.Tests.ObjectMothers\Bishop.Tests.ObjectMothers.csproj">
+    <ProjectReference Include="..\Bishop.Tests.ObjectMothers\Bishop.Tests.Scenarios.csproj">
       <Project>{E8A996D4-AB37-4313-A3DE-7E55888C174A}</Project>
-      <Name>Bishop.Tests.ObjectMothers</Name>
+      <Name>Bishop.Tests.Scenarios</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

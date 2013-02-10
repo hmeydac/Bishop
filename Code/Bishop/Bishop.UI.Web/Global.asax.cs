@@ -21,7 +21,14 @@
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             DontDropDbJustCreateTablesIfModelChangedStart.Start();
+            this.RegisterTypes();
+            Bootstrapper.Initialise();
             this.MapModels();
+        }
+
+        private void RegisterTypes()
+        {
+            
         }
 
         private void MapModels()

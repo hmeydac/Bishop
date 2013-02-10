@@ -34,7 +34,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bishop.Services", "Bishop.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bishop.Services.Tests", "Bishop.Services.Tests\Bishop.Services.Tests.csproj", "{293CF4FC-BC1A-4423-A4FC-F174622E0ACA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bishop.Tests.ObjectMothers", "Bishop.Tests.ObjectMothers\Bishop.Tests.ObjectMothers.csproj", "{E8A996D4-AB37-4313-A3DE-7E55888C174A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bishop.Tests.Scenarios", "Bishop.Tests.ObjectMothers\Bishop.Tests.Scenarios.csproj", "{E8A996D4-AB37-4313-A3DE-7E55888C174A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bishop.Repositories", "Bishop.Repositories\Bishop.Repositories.csproj", "{C9E55A74-9033-46B1-B648-FD08A8A27C7B}"
 EndProject
@@ -106,5 +106,8 @@ Global
 		{6738F473-FC22-4C24-952C-84D45F480F98} = {91BF9323-8E6C-4780-8E83-B79B817415A9}
 		{01021181-FD1C-46BB-BCCD-454920F4EB3D} = {6211DE2C-FFE3-4716-88E0-830988C0DDDD}
 		{648D4A51-DB6A-4446-970D-880B7F3D1479} = {B1295EF9-0594-47FA-B0FE-85D04588516D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
 	EndGlobalSection
 EndGlobal

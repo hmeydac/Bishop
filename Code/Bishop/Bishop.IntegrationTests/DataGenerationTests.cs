@@ -1,5 +1,6 @@
 ﻿namespace Bishop.IntegrationTests
 {
+    using System;
     using System.Linq;
 
     using Bishop.Model;
@@ -15,7 +16,7 @@
         {
             // Act
             var context = new FormsContext();
-            
+
             // Clear existing data
             context.Answers.ToList().ForEach(answer => context.Answers.Remove(answer));
             context.Questions.ToList().ForEach(question => context.Questions.Remove(question));
@@ -42,7 +43,7 @@
 
         private void SaveData(FormsContext context)
         {
-            var form = new Form { Title = "Performance Review" };
+            var form = new Form { Id = Guid.NewGuid(), Title = "Performance Review" };
             var topic = new Topic { Title = "Competencias Core" };
             form.Topics.Add(topic);
             topic.Questions.Add(this.GetQuestion("Comunicación con sus pares"));

@@ -1,17 +1,43 @@
 ﻿namespace Bishop.UI.Web.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
 
+    using AutoMapper;
+
     using Bishop.Model;
     using Bishop.Model.Entities;
+    using Bishop.Services;
+    using Bishop.UI.Web.Models.Forms;
+
+    using Answer = Bishop.Model.Entities.Answer;
+    using Question = Bishop.Model.Entities.Question;
+    using QuestionTypes = Bishop.Model.Entities.QuestionTypes;
+    using Topic = Bishop.Model.Entities.Topic;
 
     public class HomeController : Controller
     {
+        private IFormService formService;
+
         // GET: /Home/
         public ActionResult Index()
         {
-            return this.View();
+            var viewModel = this.GetViewModel();
+            return this.View(viewModel);
+        }
+
+        private IFormService FormService
+        {
+            get
+            {
+                return this.formService ?? (this.formService = DependencyResolver.Current.GetService<IFormService>());
+            }
+        }
+
+        public IEnumerable<UserForm> GetViewModel()
+        {
+             return this.FormService.GetList().Select(Mapper.Map<UserForm>).ToArray();
         }
 
         public ActionResult GenerateData()

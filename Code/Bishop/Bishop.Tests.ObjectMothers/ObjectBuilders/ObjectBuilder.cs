@@ -1,12 +1,14 @@
-﻿namespace Bishop.Tests.ObjectMothers
+﻿namespace Bishop.Tests.Scenarios.ObjectBuilders
 {
-    public abstract class ObjectMother<T>
+    using System;
+
+    public abstract class ObjectBuilder<T>
     {
         private readonly T instance;
 
-        protected ObjectMother()
+        protected ObjectBuilder()
         {
-            this.instance = this.CreateInstance();
+            this.instance = Activator.CreateInstance<T>();
         }
 
         protected T Instance
@@ -16,8 +18,6 @@
                 return this.instance;
             }
         }
-
-        public abstract T CreateInstance();
 
         public T Build()
         {

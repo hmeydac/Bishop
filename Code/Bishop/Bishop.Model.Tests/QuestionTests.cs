@@ -3,9 +3,8 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using Bishop.Framework.Exceptions;
     using Bishop.Model.Entities;
-    using Bishop.Tests.ObjectMothers;
+    using Bishop.Tests.Scenarios.ObjectBuilders;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -38,7 +37,7 @@
         public void QuestionIdShouldGetAndSetValues()
         {
             // Arrange
-            var question = new QuestionObjectMother().Build();
+            var question = new QuestionBuilder().Build();
             var expected = 45;
 
             // Act
@@ -53,7 +52,7 @@
         public void QuestionTextShouldGetAndSetValues()
         {
             // Arrange
-            var question = new QuestionObjectMother().Build();
+            var question = new QuestionBuilder().Build();
             var expected = "Test Question";
 
             // Act
@@ -68,7 +67,7 @@
         public void QuestionTypeShouldGetAndSetValues()
         {
             // Arrange
-            var question = new QuestionObjectMother().Build();
+            var question = new QuestionBuilder().Build();
             var expected = QuestionTypes.SingleOption;
 
             // Act
@@ -85,8 +84,8 @@
             // Arrange
             var expectedAnswerTitle = "Test Answer";
             var expectedCount = 1;
-            var question = new QuestionObjectMother().Build();
-            var answer = new AnswerObjectMother().WithText(expectedAnswerTitle).Build();
+            var question = new QuestionBuilder().Build();
+            var answer = new AnswerBuilder().WithText(expectedAnswerTitle).Build();
 
             // Act
             question.Answers.Add(answer);
@@ -103,8 +102,8 @@
         {
             // Arrange
             var expectedCount = 0;
-            var answer = new AnswerObjectMother().Build();
-            var question = new QuestionObjectMother().WithAnswer(answer).Build();
+            var answer = new AnswerBuilder().Build();
+            var question = new QuestionBuilder().WithAnswer(answer).Build();
 
             // Act
             question.Answers.Remove(answer);
@@ -120,9 +119,9 @@
         public void RemoveInexistentAnswerShouldFail()
         {
             // Arrange
-            var falseAnswer = new AnswerObjectMother().Build();
-            var answer = new AnswerObjectMother().Build();
-            var question = new QuestionObjectMother().WithAnswer(answer).Build();
+            var falseAnswer = new AnswerBuilder().Build();
+            var answer = new AnswerBuilder().Build();
+            var question = new QuestionBuilder().WithAnswer(answer).Build();
 
             // Act
             var actual = question.Answers.Remove(falseAnswer);

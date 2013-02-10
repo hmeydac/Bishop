@@ -1,6 +1,6 @@
 ﻿@using Bishop.UI.Web.Models.Forms
 
-@model UserForm
+@model IEnumerable<UserForm>
 @{
     ViewBag.Title = "Index";
 }
@@ -8,3 +8,12 @@
 <h1>Hello World</h1>
 
 @Html.ActionLink("Generate Sample Data", "GenerateData")
+<div>
+    <h3>Current Forms</h3>
+    @{
+        foreach (var form in this.Model)
+        {
+            @Html.ActionLink(form.Title, "Index", "Fill" ,new { id = form.Id }, null)
+        }
+    }
+</div>

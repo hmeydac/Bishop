@@ -66,6 +66,10 @@
       <Project>{DC5A73B2-5794-462A-912B-AF2599A3E9E1}</Project>
       <Name>Bishop.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bishop.Tests.ObjectMothers\Bishop.Tests.Scenarios.csproj">
+      <Project>{E8A996D4-AB37-4313-A3DE-7E55888C174A}</Project>
+      <Name>Bishop.Tests.Scenarios</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

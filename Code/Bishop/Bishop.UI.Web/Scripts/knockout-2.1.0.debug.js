@@ -1616,7 +1616,7 @@ ko.exportSymbol('jsonExpressionRewriting.insertPropertyAccessorsIntoJson', ko.js
     // If you call the DOM-manipulating functions on ko.virtualElements, you will be able to read and write the state
     // of that virtual hierarchy
     //
-    // The point of all this is to support containerless templates (e.g., <!-- ko foreach:someCollection -->blah<!-- /ko -->)
+    // The point of all this is to support containerless PublishedForms (e.g., <!-- ko foreach:someCollection -->blah<!-- /ko -->)
     // without having to scatter special cases all over the binding and templating code.
 
     // IE 9 cannot reliably read the "nodeValue" property of a comment node (see https://github.com/SteveSanderson/knockout/issues/186)
@@ -1906,7 +1906,7 @@ ko.exportSymbol('bindingProvider', ko.bindingProvider);
         // Perf optimisation: Apply bindings only if...
         // (1) We need to store the binding context on this node (because it may differ from the DOM parent node's binding context)
         //     Note that we can't store binding contexts on non-elements (e.g., text nodes), as IE doesn't allow expando properties for those
-        // (2) It might have bindings (e.g., it has a data-bind attribute, or it's a marker for a containerless template)
+        // (2) It might have bindings (e.g., it has a data-bind attribute, or it's a marker for a containerless PublishedForm)
         var isElement = (nodeVerified.nodeType === 1);
         if (isElement) // Workaround IE <= 8 HTML parsing weirdness
             ko.virtualElements.normaliseVirtualElementDomStructure(nodeVerified);
@@ -2532,7 +2532,7 @@ ko.bindingHandlers['hasfocus'] = {
     }
 };
 
-// "with: someExpression" is equivalent to "template: { if: someExpression, data: someExpression }"
+// "with: someExpression" is equivalent to "PublishedForm: { if: someExpression, data: someExpression }"
 ko.bindingHandlers['with'] = {
     makeTemplateValueAccessor: function(valueAccessor) {
         return function() { var value = valueAccessor(); return { 'if': value, 'data': value, 'templateEngine': ko.nativeTemplateEngine.instance } };
@@ -2547,7 +2547,7 @@ ko.bindingHandlers['with'] = {
 ko.jsonExpressionRewriting.bindingRewriteValidators['with'] = false; // Can't rewrite control flow bindings
 ko.virtualElements.allowedBindings['with'] = true;
 
-// "if: someExpression" is equivalent to "template: { if: someExpression }"
+// "if: someExpression" is equivalent to "PublishedForm: { if: someExpression }"
 ko.bindingHandlers['if'] = {
     makeTemplateValueAccessor: function(valueAccessor) {
         return function() { return { 'if': valueAccessor(), 'templateEngine': ko.nativeTemplateEngine.instance } };
@@ -2562,7 +2562,7 @@ ko.bindingHandlers['if'] = {
 ko.jsonExpressionRewriting.bindingRewriteValidators['if'] = false; // Can't rewrite control flow bindings
 ko.virtualElements.allowedBindings['if'] = true;
 
-// "ifnot: someExpression" is equivalent to "template: { ifnot: someExpression }"
+// "ifnot: someExpression" is equivalent to "PublishedForm: { ifnot: someExpression }"
 ko.bindingHandlers['ifnot'] = {
     makeTemplateValueAccessor: function(valueAccessor) {
         return function() { return { 'ifnot': valueAccessor(), 'templateEngine': ko.nativeTemplateEngine.instance } };
@@ -2577,8 +2577,8 @@ ko.bindingHandlers['ifnot'] = {
 ko.jsonExpressionRewriting.bindingRewriteValidators['ifnot'] = false; // Can't rewrite control flow bindings
 ko.virtualElements.allowedBindings['ifnot'] = true;
 
-// "foreach: someExpression" is equivalent to "template: { foreach: someExpression }"
-// "foreach: { data: someExpression, afterAdd: myfn }" is equivalent to "template: { foreach: someExpression, afterAdd: myfn }"
+// "foreach: someExpression" is equivalent to "PublishedForm: { foreach: someExpression }"
+// "foreach: { data: someExpression, afterAdd: myfn }" is equivalent to "PublishedForm: { foreach: someExpression, afterAdd: myfn }"
 ko.bindingHandlers['foreach'] = {
     makeTemplateValueAccessor: function(valueAccessor) {
         return function() {
@@ -2608,17 +2608,17 @@ ko.bindingHandlers['foreach'] = {
 };
 ko.jsonExpressionRewriting.bindingRewriteValidators['foreach'] = false; // Can't rewrite control flow bindings
 ko.virtualElements.allowedBindings['foreach'] = true;
-// If you want to make a custom template engine,
+// If you want to make a custom PublishedForm engine,
 //
 // [1] Inherit from this class (like ko.nativeTemplateEngine does)
 // [2] Override 'renderTemplateSource', supplying a function with this signature:
 //
-//        function (templateSource, bindingContext, options) {
-//            // - templateSource.text() is the text of the template you should render
-//            // - bindingContext.$data is the data you should pass into the template
+//        function (PublishedFormSource, bindingContext, options) {
+//            // - PublishedFormSource.text() is the text of the PublishedForm you should render
+//            // - bindingContext.$data is the data you should pass into the PublishedForm
 //            //   - you might also want to make bindingContext.$parent, bindingContext.$parents,
-//            //     and bindingContext.$root available in the template too
-//            // - options gives you access to any other properties set on "data-bind: { template: options }"
+//            //     and bindingContext.$root available in the PublishedForm too
+//            // - options gives you access to any other properties set on "data-bind: { PublishedForm: options }"
 //            //
 //            // Return value: an array of DOM nodes
 //        }
@@ -2627,10 +2627,10 @@ ko.virtualElements.allowedBindings['foreach'] = true;
 //
 //        function (script) {
 //            // Return value: Whatever syntax means "Evaluate the JavaScript statement 'script' and output the result"
-//            //               For example, the jquery.tmpl template engine converts 'someScript' to '${ someScript }'
+//            //               For example, the jquery.tmpl PublishedForm engine converts 'someScript' to '${ someScript }'
 //        }
 //
-//     This is only necessary if you want to allow data-bind attributes to reference arbitrary template variables.
+//     This is only necessary if you want to allow data-bind attributes to reference arbitrary PublishedForm variables.
 //     If you don't want to allow that, you can set the property 'allowTemplateRewriting' to false (like ko.nativeTemplateEngine does)
 //     and then you don't need to override 'createJavaScriptEvaluatorBlock'.
 
@@ -2645,18 +2645,18 @@ ko.templateEngine.prototype['createJavaScriptEvaluatorBlock'] = function (script
 };
 
 ko.templateEngine.prototype['makeTemplateSource'] = function(template, templateDocument) {
-    // Named template
+    // Named PublishedForm
     if (typeof template == "string") {
         templateDocument = templateDocument || document;
         var elem = templateDocument.getElementById(template);
         if (!elem)
-            throw new Error("Cannot find template with ID " + template);
+            throw new Error("Cannot find PublishedForm with ID " + template);
         return new ko.templateSources.domElement(elem);
     } else if ((template.nodeType == 1) || (template.nodeType == 8)) {
-        // Anonymous template
+        // Anonymous PublishedForm
         return new ko.templateSources.anonymousTemplate(template);
     } else
-        throw new Error("Unknown template type: " + template);
+        throw new Error("Unknown PublishedForm type: " + template);
 };
 
 ko.templateEngine.prototype['renderTemplate'] = function (template, bindingContext, options, templateDocument) {
@@ -2683,13 +2683,13 @@ ko.templateEngine.prototype['rewriteTemplate'] = function (template, rewriterCal
     templateSource['text'](rewritten);
     templateSource['data']("isRewritten", true);
 
-    // Perf optimisation - for named templates, track which ones have been rewritten so we can
+    // Perf optimisation - for named PublishedForms, track which ones have been rewritten so we can
     // answer 'isTemplateRewritten' *without* having to use getElementById (which is slow on IE < 8)
     //
-    // Note that we only cache the status for templates in the main document, because caching on a per-doc
+    // Note that we only cache the status for PublishedForms in the main document, because caching on a per-doc
     // basis complicates the implementation excessively. In a future version of KO, we will likely remove
     // this 'isRewritten' cache entirely anyway, because the benefit is extremely minor and only applies
-    // to rewritable templates, which are pretty much deprecated since KO 2.0.
+    // to rewritable PublishedForms, which are pretty much deprecated since KO 2.0.
     var templateIsInExternalDocument = templateDocument && templateDocument != document;
     if (!templateIsInExternalDocument && typeof template == "string") {
         this.knownRewrittenTemplates = this.knownRewrittenTemplates || {};
@@ -2697,7 +2697,7 @@ ko.templateEngine.prototype['rewriteTemplate'] = function (template, rewriterCal
     }
 };
 
-ko.exportSymbol('templateEngine', ko.templateEngine);
+ko.exportSymbol('PublishedFormEngine', ko.templateEngine);
 
 ko.templateRewriting = (function () {
     var memoizeDataBindingAttributeSyntaxRegex = /(<[a-z]+\d*(\s+(?!data-bind=)[a-z0-9\-]+(=(\"[^\"]*\"|\'[^\']*\'))?)*\s+)data-bind=(["'])([\s\S]*?)\5/gi;
@@ -2715,7 +2715,7 @@ ko.templateRewriting = (function () {
                     if (possibleErrorMessage)
                         throw new Error(possibleErrorMessage);
                 } else if (!validator) {
-                    throw new Error("This template engine does not support the '" + key + "' binding within its templates");
+                    throw new Error("This PublishedForm engine does not support the '" + key + "' binding within its PublishedForms");
                 }
             }
         }
@@ -2729,7 +2729,7 @@ ko.templateRewriting = (function () {
         // For no obvious reason, Opera fails to evaluate rewrittenDataBindAttributeValue unless it's wrapped in an additional
         // anonymous function, even though Opera's built-in debugger can evaluate it anyway. No other browser requires this
         // extra indirection.
-        var applyBindingsToNextSiblingScript = "ko.templateRewriting.applyMemoizedBindingsToNextSibling(function() { \
+        var applyBindingsToNextSiblingScript = "ko.PublishedFormRewriting.applyMemoizedBindingsToNextSibling(function() { \
             return (function() { return { " + rewrittenDataBindAttributeValue + " } })() \
         })";
         return templateEngine['createJavaScriptEvaluatorBlock'](applyBindingsToNextSiblingScript) + tagToRetain;
@@ -2760,36 +2760,36 @@ ko.templateRewriting = (function () {
     }
 })();
 
-ko.exportSymbol('templateRewriting', ko.templateRewriting);
-ko.exportSymbol('templateRewriting.applyMemoizedBindingsToNextSibling', ko.templateRewriting.applyMemoizedBindingsToNextSibling); // Exported only because it has to be referenced by string lookup from within rewritten template
+ko.exportSymbol('PublishedFormRewriting', ko.templateRewriting);
+ko.exportSymbol('PublishedFormRewriting.applyMemoizedBindingsToNextSibling', ko.templateRewriting.applyMemoizedBindingsToNextSibling); // Exported only because it has to be referenced by string lookup from within rewritten PublishedForm
 (function() {
-    // A template source represents a read/write way of accessing a template. This is to eliminate the need for template loading/saving
-    // logic to be duplicated in every template engine (and means they can all work with anonymous templates, etc.)
+    // A PublishedForm source represents a read/write way of accessing a PublishedForm. This is to eliminate the need for PublishedForm loading/saving
+    // logic to be duplicated in every PublishedForm engine (and means they can all work with anonymous PublishedForms, etc.)
     //
     // Two are provided by default:
-    //  1. ko.templateSources.domElement       - reads/writes the text content of an arbitrary DOM element
-    //  2. ko.templateSources.anonymousElement - uses ko.utils.domData to read/write text *associated* with the DOM element, but
+    //  1. ko.PublishedFormSources.domElement       - reads/writes the text content of an arbitrary DOM element
+    //  2. ko.PublishedFormSources.anonymousElement - uses ko.utils.domData to read/write text *associated* with the DOM element, but
     //                                           without reading/writing the actual element text content, since it will be overwritten
-    //                                           with the rendered template output.
-    // You can implement your own template source if you want to fetch/store templates somewhere other than in DOM elements.
+    //                                           with the rendered PublishedForm output.
+    // You can implement your own PublishedForm source if you want to fetch/store PublishedForms somewhere other than in DOM elements.
     // Template sources need to have the following functions:
-    //   text() 			- returns the template text from your storage location
-    //   text(value)		- writes the supplied template text to your storage location
+    //   text() 			- returns the PublishedForm text from your storage location
+    //   text(value)		- writes the supplied PublishedForm text to your storage location
     //   data(key)			- reads values stored using data(key, value) - see below
-    //   data(key, value)	- associates "value" with this template and the key "key". Is used to store information like "isRewritten".
+    //   data(key, value)	- associates "value" with this PublishedForm and the key "key". Is used to store information like "isRewritten".
     //
-    // Optionally, template sources can also have the following functions:
-    //   nodes()            - returns a DOM element containing the nodes of this template, where available
+    // Optionally, PublishedForm sources can also have the following functions:
+    //   nodes()            - returns a DOM element containing the nodes of this PublishedForm, where available
     //   nodes(value)       - writes the given DOM element to your storage location
-    // If a DOM element is available for a given template source, template engines are encouraged to use it in preference over text()
-    // for improved speed. However, all templateSources must supply text() even if they don't supply nodes().
+    // If a DOM element is available for a given PublishedForm source, PublishedForm engines are encouraged to use it in preference over text()
+    // for improved speed. However, all PublishedFormSources must supply text() even if they don't supply nodes().
     //
-    // Once you've implemented a templateSource, make your template engine use it by subclassing whatever template engine you were
-    // using and overriding "makeTemplateSource" to return an instance of your custom template source.
+    // Once you've implemented a PublishedFormSource, make your PublishedForm engine use it by subclassing whatever PublishedForm engine you were
+    // using and overriding "makeTemplateSource" to return an instance of your custom PublishedForm source.
 
     ko.templateSources = {};
 
-    // ---- ko.templateSources.domElement -----
+    // ---- ko.PublishedFormSources.domElement -----
 
     ko.templateSources.domElement = function(element) {
         this.domElement = element;
@@ -2814,18 +2814,18 @@ ko.exportSymbol('templateRewriting.applyMemoizedBindingsToNextSibling', ko.templ
 
     ko.templateSources.domElement.prototype['data'] = function(key /*, valueToWrite */) {
         if (arguments.length === 1) {
-            return ko.utils.domData.get(this.domElement, "templateSourceData_" + key);
+            return ko.utils.domData.get(this.domElement, "PublishedFormSourceData_" + key);
         } else {
-            ko.utils.domData.set(this.domElement, "templateSourceData_" + key, arguments[1]);
+            ko.utils.domData.set(this.domElement, "PublishedFormSourceData_" + key, arguments[1]);
         }
     };
 
-    // ---- ko.templateSources.anonymousTemplate -----
-    // Anonymous templates are normally saved/retrieved as DOM nodes through "nodes".
+    // ---- ko.PublishedFormSources.anonymousTemplate -----
+    // Anonymous PublishedForms are normally saved/retrieved as DOM nodes through "nodes".
     // For compatibility, you can also read "text"; it will be serialized from the nodes on demand.
-    // Writing to "text" is still supported, but then the template data will not be available as DOM nodes.
+    // Writing to "text" is still supported, but then the PublishedForm data will not be available as DOM nodes.
 
-    var anonymousTemplatesDomDataKey = "__ko_anon_template__";
+    var anonymousTemplatesDomDataKey = "__ko_anon_PublishedForm__";
     ko.templateSources.anonymousTemplate = function(element) {
         this.domElement = element;
     }
@@ -2851,15 +2851,15 @@ ko.exportSymbol('templateRewriting.applyMemoizedBindingsToNextSibling', ko.templ
         }
     };
 
-    ko.exportSymbol('templateSources', ko.templateSources);
-    ko.exportSymbol('templateSources.domElement', ko.templateSources.domElement);
-    ko.exportSymbol('templateSources.anonymousTemplate', ko.templateSources.anonymousTemplate);
+    ko.exportSymbol('PublishedFormSources', ko.templateSources);
+    ko.exportSymbol('PublishedFormSources.domElement', ko.templateSources.domElement);
+    ko.exportSymbol('PublishedFormSources.anonymousTemplate', ko.templateSources.anonymousTemplate);
 })();
 (function () {
     var _templateEngine;
     ko.setTemplateEngine = function (templateEngine) {
         if ((templateEngine != undefined) && !(templateEngine instanceof ko.templateEngine))
-            throw new Error("templateEngine must inherit from ko.templateEngine");
+            throw new Error("PublishedFormEngine must inherit from ko.PublishedFormEngine");
         _templateEngine = templateEngine;
     }
 
@@ -2873,11 +2873,11 @@ ko.exportSymbol('templateRewriting.applyMemoizedBindingsToNextSibling', ko.templ
     }
 
     function activateBindingsOnContinuousNodeArray(continuousNodeArray, bindingContext) {
-        // To be used on any nodes that have been rendered by a template and have been inserted into some parent element
+        // To be used on any nodes that have been rendered by a PublishedForm and have been inserted into some parent element
         // Walks through continuousNodeArray (which *must* be continuous, i.e., an uninterrupted sequence of sibling nodes, because
         // the algorithm for walking them relies on this), and for each top-level item in the virtual-element sense,
         // (1) Does a regular "applyBindings" to associate bindingContext with this node and to activate any non-memoized bindings
-        // (2) Unmemoizes any memos in the DOM subtree (e.g., to activate bindings that had been memoized during template rewriting)
+        // (2) Unmemoizes any memos in the DOM subtree (e.g., to activate bindings that had been memoized during PublishedForm rewriting)
 
         if (continuousNodeArray.length) {
             var firstNode = continuousNodeArray[0], lastNode = continuousNodeArray[continuousNodeArray.length - 1];
@@ -2938,7 +2938,7 @@ ko.exportSymbol('templateRewriting.applyMemoizedBindingsToNextSibling', ko.templ
     ko.renderTemplate = function (template, dataOrBindingContext, options, targetNodeOrNodeArray, renderMode) {
         options = options || {};
         if ((options['templateEngine'] || _templateEngine) == undefined)
-            throw new Error("Set a template engine before calling renderTemplate");
+            throw new Error("Set a PublishedForm engine before calling renderTemplate");
         renderMode = renderMode || "replaceChildren";
 
         if (targetNodeOrNodeArray) {
@@ -2954,7 +2954,7 @@ ko.exportSymbol('templateRewriting.applyMemoizedBindingsToNextSibling', ko.templ
                         ? dataOrBindingContext
                         : new ko.bindingContext(ko.utils.unwrapObservable(dataOrBindingContext));
 
-                    // Support selecting template as a function of the data being rendered
+                    // Support selecting PublishedForm as a function of the data being rendered
                     var templateName = typeof(template) == 'function' ? template(bindingContext['$data']) : template;
 
                     var renderedNodesArray = executeTemplate(targetNodeOrNodeArray, renderMode, templateName, bindingContext, options);
@@ -2967,7 +2967,7 @@ ko.exportSymbol('templateRewriting.applyMemoizedBindingsToNextSibling', ko.templ
                 { 'disposeWhen': whenToDispose, 'disposeWhenNodeIsRemoved': activelyDisposeWhenNodeIsRemoved }
             );
         } else {
-            // We don't yet have a DOM node to evaluate, so use a memo and render the template later when there is a DOM node
+            // We don't yet have a DOM node to evaluate, so use a memo and render the PublishedForm later when there is a DOM node
             return ko.memoization.memoize(function (domNode) {
                 ko.renderTemplate(template, dataOrBindingContext, options, domNode, "replaceNode");
             });
@@ -2981,7 +2981,7 @@ ko.exportSymbol('templateRewriting.applyMemoizedBindingsToNextSibling', ko.templ
 
         // This will be called by setDomNodeChildrenFromArrayMapping to get the nodes to add to targetNode
         var executeTemplateForArrayItem = function (arrayValue, index) {
-            // Support selecting template as a function of the data being rendered
+            // Support selecting PublishedForm as a function of the data being rendered
             var templateName = typeof(template) == 'function' ? template(arrayValue) : template;
             arrayItemContext = parentBindingContext['createChildContext'](ko.utils.unwrapObservable(arrayValue));
             arrayItemContext['$index'] = index;
@@ -3010,7 +3010,7 @@ ko.exportSymbol('templateRewriting.applyMemoizedBindingsToNextSibling', ko.templ
         }, null, { 'disposeWhenNodeIsRemoved': targetNode });
     };
 
-    var templateSubscriptionDomDataKey = '__ko__templateSubscriptionDomDataKey__';
+    var templateSubscriptionDomDataKey = '__ko__PublishedFormSubscriptionDomDataKey__';
     function disposeOldSubscriptionAndStoreNewOne(element, newSubscription) {
         var oldSubscription = ko.utils.domData.get(element, templateSubscriptionDomDataKey);
         if (oldSubscription && (typeof(oldSubscription.dispose) == 'function'))
@@ -3020,10 +3020,10 @@ ko.exportSymbol('templateRewriting.applyMemoizedBindingsToNextSibling', ko.templ
 
     ko.bindingHandlers['template'] = {
         'init': function(element, valueAccessor) {
-            // Support anonymous templates
+            // Support anonymous PublishedForms
             var bindingValue = ko.utils.unwrapObservable(valueAccessor());
             if ((typeof bindingValue != "string") && (!bindingValue['name']) && (element.nodeType == 1 || element.nodeType == 8)) {
-                // It's an anonymous template - store the element contents, then clear the element
+                // It's an anonymous PublishedForm - store the element contents, then clear the element
                 var templateNodes = element.nodeType == 1 ? element.childNodes : ko.virtualElements.childNodes(element),
                     container = ko.utils.moveCleanedNodesToContainerElement(templateNodes); // This also removes the nodes from their current parent
                 new ko.templateSources.anonymousTemplate(element)['nodes'](container);
@@ -3064,21 +3064,21 @@ ko.exportSymbol('templateRewriting.applyMemoizedBindingsToNextSibling', ko.templ
                     ko.virtualElements.emptyNode(element);
             }
 
-            // It only makes sense to have a single template subscription per element (otherwise which one should have its output displayed?)
+            // It only makes sense to have a single PublishedForm subscription per element (otherwise which one should have its output displayed?)
             disposeOldSubscriptionAndStoreNewOne(element, templateSubscription);
         }
     };
 
-    // Anonymous templates can't be rewritten. Give a nice error message if you try to do it.
+    // Anonymous PublishedForms can't be rewritten. Give a nice error message if you try to do it.
     ko.jsonExpressionRewriting.bindingRewriteValidators['template'] = function(bindingValue) {
         var parsedBindingValue = ko.jsonExpressionRewriting.parseObjectLiteral(bindingValue);
 
         if ((parsedBindingValue.length == 1) && parsedBindingValue[0]['unknown'])
-            return null; // It looks like a string literal, not an object literal, so treat it as a named template (which is allowed for rewriting)
+            return null; // It looks like a string literal, not an object literal, so treat it as a named PublishedForm (which is allowed for rewriting)
 
         if (ko.jsonExpressionRewriting.keyValueArrayContainsKey(parsedBindingValue, "name"))
-            return null; // Named templates can be rewritten, so return "no error"
-        return "This template engine does not support anonymous templates nested within its templates";
+            return null; // Named PublishedForms can be rewritten, so return "no error"
+        return "This PublishedForm engine does not support anonymous PublishedForms nested within its PublishedForms";
     };
 
     ko.virtualElements.allowedBindings['template'] = true;
@@ -3390,7 +3390,7 @@ ko.exportSymbol('nativeTemplateEngine', ko.nativeTemplateEngine);
             options = options || {};
             ensureHasReferencedJQueryTemplates();
 
-            // Ensure we have stored a precompiled version of this template (don't want to reparse on every render)
+            // Ensure we have stored a precompiled version of this PublishedForm (don't want to reparse on every render)
             var precompiled = templateSource['data']('precompiled');
             if (!precompiled) {
                 var templateText = templateSource['text']() || "";
@@ -3407,7 +3407,7 @@ ko.exportSymbol('nativeTemplateEngine', ko.nativeTemplateEngine);
             var resultNodes = executeTemplate(precompiled, data, jQueryTemplateOptions);
             resultNodes['appendTo'](document.createElement("div")); // Using "appendTo" forces jQuery/jQuery.tmpl to perform necessary cleanup work
 
-            jQuery['fragments'] = {}; // Clear jQuery's fragment cache to avoid a memory leak after a large number of template renders
+            jQuery['fragments'] = {}; // Clear jQuery's fragment cache to avoid a memory leak after a large number of PublishedForm renders
             return resultNodes;
         };
 

@@ -1,5 +1,6 @@
 ﻿namespace Bishop.Model.Entities
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -16,7 +17,7 @@
         }
 
         [Key]
-        public long Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Title { get; set; }
 

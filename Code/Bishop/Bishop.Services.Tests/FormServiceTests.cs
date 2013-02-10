@@ -5,7 +5,7 @@
 
     using Bishop.Model.Entities;
     using Bishop.Repositories;
-    using Bishop.Tests.ObjectMothers;
+    using Bishop.Tests.Scenarios.ObjectBuilders;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -30,6 +30,20 @@
         }
 
         [TestMethod]
+        public void FormServiceGetListShouldReturnListOfForms()
+        {
+            // Arrange
+            var unitOfWorkMock = new Mock<IUnitOfWork>(MockBehavior.Strict);
+            var expectedData = this.GetSampleData().OrderBy(f => f.Title).ToArray();
+            unitOfWorkMock.Setup(u => u.Query<Form>()).Returns(expectedData.AsQueryable());
+            var service = new FormService(unitOfWorkMock.Object);
+
+            // Act
+            var actual = service.GetList();
+            CollectionAssert.AreEqual(expectedData, actual);
+        }
+
+        [TestMethod]
         public void FormServiceGetShouldRetrieveSingleForm()
         {
             // Arrange
@@ -38,7 +52,7 @@
             var unitOfWork = this.SetupUnitOfWork(sampleData);
             var service = new FormService(unitOfWork.Object);
 
-            // Act
+            // Act  
             var actual = service.Get(expected.Id);
 
             // Assert
@@ -58,9 +72,9 @@
         {
             return new[]
                        {
-                           new FormObjectMother().WithRandomId().Build(), new FormObjectMother().WithRandomId().Build(),
-                           new FormObjectMother().WithRandomId().Build(), new FormObjectMother().WithRandomId().Build(),
-                           new FormObjectMother().WithRandomId().Build()
+                           new FormBuilder().WithRandomId().Build(), new FormBuilder().WithRandomId().Build(),
+                           new FormBuilder().WithRandomId().Build(), new FormBuilder().WithRandomId().Build(),
+                           new FormBuilder().WithRandomId().Build()
                        };
         }
     }

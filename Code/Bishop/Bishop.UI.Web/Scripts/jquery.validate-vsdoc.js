@@ -1,4 +1,4 @@
-/*
+﻿/*
 * This file has been commented to support Visual Studio Intellisense.
 * You should not use this file at runtime inside the browser--it is only
 * intended to be used only for design-time IntelliSense.  Please use the
@@ -225,7 +225,7 @@ $.validator = function( options, form ) {
 $.validator.format = function(source, params) {
 	/// <summary>
 	/// Replaces {n} placeholders with arguments.
-	/// One or more arguments can be passed, in addition to the string template itself, to insert
+	/// One or more arguments can be passed, in addition to the string PublishedForm itself, to insert
 	/// into the string.
 	/// </summary>
 	/// <param name="source" type="String">

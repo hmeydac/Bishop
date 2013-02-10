@@ -1,5 +1,6 @@
 ﻿namespace Bishop.UI.Web.Controllers
 {
+    using System;
     using System.Web.Mvc;
 
     using AutoMapper;
@@ -31,14 +32,14 @@
             return this.RedirectToAction("Index", "Home");
         }
 
-        public ActionResult Template(int formId)
+        public ActionResult Template(Guid formId)
         {
             var formData = this.GetFormTemplate(formId);
             var viewModel = this.ConstructViewModel(formData);
             return this.View(viewModel);
         }
 
-        private Form GetFormTemplate(int formId)
+        private Form GetFormTemplate(Guid formId)
         {
             var formData = this.formService.Get(formId);
             if (formData == null)

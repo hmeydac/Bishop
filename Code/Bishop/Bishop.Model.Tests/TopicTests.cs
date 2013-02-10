@@ -1,12 +1,10 @@
 ﻿namespace Bishop.Model.Tests
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using Bishop.Framework.Exceptions;
     using Bishop.Model.Entities;
-    using Bishop.Tests.ObjectMothers;
+    using Bishop.Tests.Scenarios.ObjectBuilders;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -37,7 +35,7 @@
         public void TopicIdShouldGetAndSetValues()
         {
             // Arrange
-            var topic = new TopicObjectMother().Build();
+            var topic = new TopicBuilder().Build();
             var expected = 45;
 
             // Act
@@ -52,7 +50,7 @@
         public void TopicTitleShouldGetAndSetValues()
         {
             // Arrange
-            var topic = new TopicObjectMother().Build();
+            var topic = new TopicBuilder().Build();
             var expected = "Test Topic";
 
             // Act
@@ -69,8 +67,8 @@
             // Arrange
             var expectedQuestionTitle = "Test Question";
             var expectedCount = 1;
-            var topic = new TopicObjectMother().Build();
-            var question = new QuestionObjectMother().WithText(expectedQuestionTitle).Build();
+            var topic = new TopicBuilder().Build();
+            var question = new QuestionBuilder().WithText(expectedQuestionTitle).Build();
 
             // Act
             topic.Questions.Add(question);
@@ -87,8 +85,8 @@
         {
             // Arrange
             var expectedCount = 0;
-            var question = new QuestionObjectMother().Build();
-            var topic = new TopicObjectMother().WithQuestion(question).Build();
+            var question = new QuestionBuilder().Build();
+            var topic = new TopicBuilder().WithQuestion(question).Build();
 
             // Act
             topic.Questions.Remove(question);
@@ -105,9 +103,9 @@
         {
             // Arrange
             var expectedCount = 1;
-            var falseQuestion = new QuestionObjectMother().Build();
-            var question = new QuestionObjectMother().Build();
-            var topic = new TopicObjectMother().WithQuestion(question).Build();
+            var falseQuestion = new QuestionBuilder().Build();
+            var question = new QuestionBuilder().Build();
+            var topic = new TopicBuilder().WithQuestion(question).Build();
 
             // Act
            var actual = topic.Questions.Remove(falseQuestion);

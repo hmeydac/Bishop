@@ -1,7 +1,8 @@
 ﻿namespace Bishop.Model.Tests
 {
     using Bishop.Model.Entities;
-    using Bishop.Tests.ObjectMothers;
+    using Bishop.Tests.Scenarios.ObjectBuilders;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
@@ -30,7 +31,7 @@
         public void AnswerIdShouldGetAndSetValues()
         {
             // Arrange
-            var answer = new AnswerObjectMother().Build();
+            var answer = new AnswerBuilder().Build();
             var expected = 45;
 
             // Act
@@ -45,7 +46,7 @@
         public void AnswerTextShouldGetAndSetValues()
         {
             // Arrange
-            var answer = new AnswerObjectMother().Build();
+            var answer = new AnswerBuilder().Build();
             var expected = "Test Answer";
 
             // Act
@@ -60,7 +61,7 @@
         public void AnswerWeightShouldGetAndSetValues()
         {
             // Arrange
-            var answer = new AnswerObjectMother().Build();
+            var answer = new AnswerBuilder().Build();
             var expected = 5;
 
             // Act
@@ -75,7 +76,7 @@
         public void AnswerIsCorrectShouldGetAndSetValues()
         {
             // Arrange
-            var answer = new AnswerObjectMother().Build();
+            var answer = new AnswerBuilder().Build();
 
             // Act
             answer.IsCorrectAnswer = true;

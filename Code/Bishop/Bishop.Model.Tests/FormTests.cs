@@ -1,10 +1,11 @@
 ﻿namespace Bishop.Model.Tests
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     using Bishop.Model.Entities;
-    using Bishop.Tests.ObjectMothers;
+    using Bishop.Tests.Scenarios.ObjectBuilders;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -15,7 +16,7 @@
         public void FormDefaultConstructorShouldWork()
         {
             // Arrange
-            var expectedId = 0;
+            var expectedId = Guid.Empty;
             var expectedTopics = 0;
             var expectedTitle = string.Empty;
 
@@ -37,8 +38,8 @@
         public void FormIdShouldGetAndSetValues()
         {
             // Arrange
-            var form = new FormObjectMother().Build();
-            var expected = 45;
+            var form = new FormBuilder().Build();
+            var expected = Guid.NewGuid();
 
             // Act
             form.Id = expected;
@@ -52,7 +53,7 @@
         public void FormTitleShouldGetAndSetValues()
         {
             // Arrange
-            var form = new FormObjectMother().Build();
+            var form = new FormBuilder().Build();
             var expected = "Test Form";
 
             // Act
@@ -69,8 +70,8 @@
             // Arrange
             var expectedTopicTitle = "Test Topic";
             var expectedCount = 1;
-            var form = new FormObjectMother().Build();
-            var topic = new TopicObjectMother().WithTitle(expectedTopicTitle).Build();
+            var form = new FormBuilder().Build();
+            var topic = new TopicBuilder().WithTitle(expectedTopicTitle).Build();
 
             // Act
             form.Topics.Add(topic);
@@ -87,8 +88,8 @@
         {
             // Arrange
             var expectedCount = 0;
-            var topic = new TopicObjectMother().Build();
-            var form = new FormObjectMother().WithTopic(topic).Build();
+            var topic = new TopicBuilder().Build();
+            var form = new FormBuilder().WithTopic(topic).Build();
 
             // Act
             form.Topics.Remove(topic);
@@ -105,9 +106,9 @@
         {
             // Arrange
             var expectedCount = 1;
-            var falseTopic = new TopicObjectMother().Build();
-            var topic = new TopicObjectMother().Build();
-            var form = new FormObjectMother().WithTopic(topic).Build();
+            var falseTopic = new TopicBuilder().Build();
+            var topic = new TopicBuilder().Build();
+            var form = new FormBuilder().WithTopic(topic).Build();
 
             // Act
             var actual = form.Topics.Remove(falseTopic);

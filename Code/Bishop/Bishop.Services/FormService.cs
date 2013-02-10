@@ -1,30 +1,36 @@
 ﻿namespace Bishop.Services
 {
+    using System;
     using System.Linq;
 
     using Bishop.Model.Entities;
     using Bishop.Repositories;
 
-    public class FormService
+    public class FormService : EntityService, IFormService
     {
-        private readonly IUnitOfWork unitOfWork;
-
-        private string[] includeNames = { "Topics", "Topics.Questions", "Topics.Questions.Answers" };
-
-
         public FormService(IUnitOfWork unitOfWork)
+            : base(unitOfWork)
         {
-            this.unitOfWork = unitOfWork;
         }
 
         public Form[] GetAll()
         {
-            return this.unitOfWork.Query<Form>(this.includeNames).ToArray();
+            return this.UnitOfWork.Query<Form>(this.GetIncludeNames()).ToArray();
         }
 
-        public Form Get(long id)
+        public Form[] GetList()
         {
-            return this.unitOfWork.Query<Form>(this.includeNames).SingleOrDefault(f => f.Id.Equals(id));
+            return this.UnitOfWork.Query<Form>().OrderBy(f => f.Title).ToArray();
+        }
+
+        public Form Get(Guid id)
+        {
+            return this.UnitOfWork.Query<Form>(this.GetIncludeNames()).SingleOrDefault(f => f.Id.Equals(id));
+        }
+
+        protected override string[] GetIncludeNames()
+        {
+            return new[] { "Topics", "Topics.Questions", "Topics.Questions.Answers" };
         }
     }
 }
