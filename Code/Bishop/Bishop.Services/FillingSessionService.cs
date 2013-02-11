@@ -18,6 +18,11 @@
             return this.UnitOfWork.Query<FillingSession>(this.GetIncludeNames()).Where(f => f.IsActive).ToArray();
         }
 
+        public FillingSession Get(Guid id)
+        {
+            return this.UnitOfWork.Query<FillingSession>().FirstOrDefault(f => f.Id.Equals(id));
+        }
+
         public FillingSession StartSession(FillingSession session)
         {
             this.UnitOfWork.Add<FillingSession>(session);

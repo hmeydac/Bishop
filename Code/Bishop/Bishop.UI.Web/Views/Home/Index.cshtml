@@ -5,15 +5,19 @@
     ViewBag.Title = "Index";
 }
 
-<h1>Hello World</h1>
-
-@Html.ActionLink("Generate Sample Data", "GenerateData")
+<div>
+    <h1>Bishop</h1>
+</div>
+<div>@Html.ActionLink("Generate Sample Data", "GenerateData")</div>
 <div>
     <h3>Current Forms</h3>
+</div>
+<div>
+    
     @{
         foreach (var form in this.Model)
         {
-            @Html.ActionLink(form.Title, "Index", "Fill" ,new { id = form.Id }, null)
+            @Html.ActionLink(form.Title, "Index", "Fill", new { id = form.Id }, null)
         }
     }
 </div>

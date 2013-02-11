@@ -18,7 +18,6 @@
 
     public class HomeController : Controller
     {
-        private IFormService formService;
 
         // GET: /Home/
         public ActionResult Index()
@@ -27,17 +26,10 @@
             return this.View(viewModel);
         }
 
-        private IFormService FormService
-        {
-            get
-            {
-                return this.formService ?? (this.formService = DependencyResolver.Current.GetService<IFormService>());
-            }
-        }
-
         public IEnumerable<UserForm> GetViewModel()
         {
-             return this.FormService.GetList().Select(Mapper.Map<UserForm>).ToArray();
+            var formService = DependencyLocator.Locator.Resolve<IFormService>();
+            return formService.GetList().Select(Mapper.Map<UserForm>).ToArray();
         }
 
         public ActionResult GenerateData()

@@ -3,6 +3,7 @@
     using System;
     using System.Web.Mvc;
 
+    using Bishop.Framework;
     using Bishop.Services;
     using Bishop.Tests.Scenarios.ObjectMothers;
     using Bishop.UI.Web.Controllers;
@@ -17,6 +18,12 @@
     {
         private readonly IUnityContainer container = new UnityContainer();
 
+        [TestInitialize]
+        public void Initialize()
+        {
+            DependencyLocator.Locator = new Locator(this.container);
+        }
+
         [TestMethod]
         public void FillControllerIndexWithIdShouldRedirectToFillingForm()
         {
@@ -24,11 +31,15 @@
             var expectedAction = "Template";
             var expectedController = "Form";
             var expectedFormId = Guid.NewGuid();
+            
+            // Setup Mock Session Service
             var sessionServiceMock = new FillingSessionServiceMother(this.container).GetMockedService();
             var session = new FillingSessionMother().GetBasicSession();
             var expectedSessionId = session.Id;
             sessionServiceMock.Setup(s => s.StartNewSession()).Returns(session);
-            var controller = new FillController(sessionServiceMock.Object);
+            DependencyLocator.Locator.RegisterInstance(sessionServiceMock.Object);
+
+            var controller = new FillController();
 
             // Act
             var actual = controller.Index(expectedFormId) as RedirectToRouteResult;

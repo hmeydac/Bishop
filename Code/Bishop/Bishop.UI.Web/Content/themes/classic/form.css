@@ -1,4 +1,5 @@
-﻿body {
+﻿body
+{
     background-color: white;
     font-family: 'Segoe UI';
     font-size: 12pt;
@@ -10,59 +11,68 @@
     width: 500px;
     margin-top: 0;
     margin-bottom: 0;
-    margin-left: auto;   
+    margin-left: auto;
     margin-right: auto;
     border: solid 1px blue;
 }
 
-.form-header {
+.form-header
+{
     background-color: navy;
     color: white;
 }
 
-.form-content {
+.form-content
+{
     margin: 5px;
 }
 
-.form-choice:first-of-type {
+.form-choice:first-of-type
+{
     border-top: none;
     margin-bottom: 25px;
 }
 
-.form-choice {
+.form-choice
+{
     border-top: 1px solid #EEE;
     margin-bottom: 25px;
     vertical-align: middle;
 }
 
-.form-choice input {
-    vertical-align: middle;
-}
+    .form-choice input
+    {
+        vertical-align: middle;
+    }
 
-.form-choice label {
-    font-size: 10pt;
-}
+    .form-choice label
+    {
+        font-size: 10pt;
+    }
 
-.form-choice textarea {
-    font-family: 'Segoe UI';
-    font-size: 10pt;
-    width: 450px;
-    height: 100px;
-}
+    .form-choice textarea
+    {
+        font-family: 'Segoe UI';
+        font-size: 10pt;
+        width: 450px;
+        height: 100px;
+    }
 
-h1
+.form-container h1
 {
     margin-top: 0;
     font-weight: 100;
     text-align: center;
 }
 
-h2, h3 {
+.form-container h2, h3
+{
     font-weight: 100;
     margin-top: 5px;
 }
 
-h5 {
+.form-container h5
+{
     margin-top: 10px;
     margin-bottom: 5px;
 }

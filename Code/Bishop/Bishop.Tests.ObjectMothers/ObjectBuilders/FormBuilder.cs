@@ -17,5 +17,11 @@
             this.Instance.Topics.Add(topic);
             return this;
         }
+
+        public FormBuilder WithTitle(string title)
+        {
+            this.Instance.Title = title;
+            return this;
+        }
     }
 }

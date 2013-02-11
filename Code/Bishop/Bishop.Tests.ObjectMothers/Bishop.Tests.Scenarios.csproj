@@ -59,8 +59,10 @@
     <Compile Include="ObjectBuilders\ObjectBuilder.cs" />
     <Compile Include="ObjectMothers\FillingSessionMother.cs" />
     <Compile Include="ObjectMothers\FillingSessionServiceMother.cs" />
+    <Compile Include="ObjectMothers\FormMother.cs" />
     <Compile Include="ObjectMothers\InjectionObjectMother.cs" />
     <Compile Include="ObjectMothers\ObjectMother.cs" />
+    <Compile Include="ObjectMothers\TopicMother.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ObjectBuilders\QuestionBuilder.cs" />
     <Compile Include="ObjectBuilders\TopicBuilder.cs" />

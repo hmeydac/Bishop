@@ -1,5 +1,6 @@
 ﻿namespace Bishop.UI.Web
 {
+    using System.Data.Entity;
     using System.Web.Http;
     using System.Web.Mvc;
     using System.Web.Optimization;
@@ -7,8 +8,14 @@
 
     using AutoMapper;
 
+    using Bishop.Framework;
+    using Bishop.Model;
     using Bishop.Model.Entities;
+    using Bishop.Repositories;
+    using Bishop.Services;
     using Bishop.UI.Web.App_Start;
+
+    using Microsoft.Practices.Unity;
 
     public class MvcApplication : System.Web.HttpApplication
     {
@@ -22,13 +29,16 @@
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             DontDropDbJustCreateTablesIfModelChangedStart.Start();
             this.RegisterTypes();
-            Bootstrapper.Initialise();
             this.MapModels();
         }
 
         private void RegisterTypes()
         {
-            
+            DependencyLocator.Locator = new Locator(new UnityContainer());
+            DependencyLocator.Locator.RegisterType<DbContext, FormsContext>();
+            DependencyLocator.Locator.RegisterType<IUnitOfWork, EntityFrameworkUnitOfWork>();
+            DependencyLocator.Locator.RegisterType<IFormService, FormService>();
+            DependencyLocator.Locator.RegisterType<IFillingSessionService, FillingSessionService>();
         }
 
         private void MapModels()
