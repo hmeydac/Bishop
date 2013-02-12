@@ -1,5 +1,6 @@
 ﻿namespace Bishop.Services.Tests
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -48,7 +49,7 @@
         {
             // Arrange
             var sampleData = this.GetSampleData();
-            var expected = sampleData[1]; // Arbritary Value
+            Form expected = sampleData[1]; // Arbritary Value
             var unitOfWork = this.SetupUnitOfWork(sampleData);
             var service = new FormService(unitOfWork.Object);
 
