@@ -6,8 +6,6 @@
 
     public interface IFillingSessionService
     {
-        FillingSession[] GetActiveSessions();
-
         FillingSession Get(Guid id);
 
         FillingSession StartNewSession();

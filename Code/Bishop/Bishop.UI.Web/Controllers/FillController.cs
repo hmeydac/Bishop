@@ -7,10 +7,11 @@
 
     public class FillController : Controller
     {
-        // GET: /Fill/
-        public ActionResult Back()
+        private IFillingSessionService sessionService;
+
+        public FillController(IFillingSessionService sessionService)
         {
-            return this.RedirectToAction("Index", "Home");
+            this.sessionService = sessionService;
         }
 
         // GET: /Fill/:id
@@ -21,8 +22,7 @@
                 return this.RedirectToAction("Index", "Home");
             }
 
-            var sessionService = DependencyLocator.Locator.Resolve<IFillingSessionService>();
-            var session = sessionService.StartNewSession();
+            var session = this.sessionService.StartNewSession();
             return this.RedirectToAction("Template", "Form", new { formId = id, sid = session.Id });
         }
     }

@@ -8,7 +8,6 @@
 
     using AutoMapper;
 
-    using Bishop.Framework;
     using Bishop.Model;
     using Bishop.Model.Entities;
     using Bishop.Repositories;
@@ -19,10 +18,9 @@
 
     public class MvcApplication : System.Web.HttpApplication
     {
-        protected void Application_Start()
+        public void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
-
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
@@ -34,11 +32,12 @@
 
         private void RegisterTypes()
         {
-            DependencyLocator.Locator = new Locator(new UnityContainer());
-            DependencyLocator.Locator.RegisterType<DbContext, FormsContext>();
-            DependencyLocator.Locator.RegisterType<IUnitOfWork, EntityFrameworkUnitOfWork>();
-            DependencyLocator.Locator.RegisterType<IFormService, FormService>();
-            DependencyLocator.Locator.RegisterType<IFillingSessionService, FillingSessionService>();
+            var container = new UnityContainer();
+            DependencyInjectionConfig.RegisterDependencyResolver(container);
+            container.RegisterType<DbContext, FormsContext>();
+            container.RegisterType<IUnitOfWork, EntityFrameworkUnitOfWork>();
+            container.RegisterType<IFormService, FormService>();
+            container.RegisterType<IFillingSessionService, FillingSessionService>();
         }
 
         private void MapModels()

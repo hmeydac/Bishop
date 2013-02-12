@@ -6,6 +6,7 @@
     using AutoMapper;
 
     using Bishop.Framework;
+    using Bishop.Framework.Exceptions;
     using Bishop.Model.Entities;
     using Bishop.Services;
     using Bishop.Tests.Scenarios.ObjectMothers;
@@ -27,10 +28,8 @@
         [TestInitialize]
         public void Initialize()
         {
-            DependencyLocator.Locator = new Locator(new UnityContainer());
-
             // Create Maps for Model and ViewModel
-            Mapper.CreateMap<Form, Models.Forms.UserForm>();
+            Mapper.CreateMap<Form, UserForm>();
             Mapper.CreateMap<Topic, Models.Forms.Topic>();
             Mapper.CreateMap<Question, Models.Forms.Question>();
             Mapper.CreateMap<Answer, Models.Forms.Answer>();
@@ -42,9 +41,9 @@
             // Arrange
             var expectedAction = "Index";
             var expectedController = "Home";
-            var expectedFormId = Guid.NewGuid();
             var formServiceMock = new Mock<IFormService>(MockBehavior.Strict);
-            var controller = new FormController();
+            var fillingSessionMock = new Mock<IFillingSessionService>(MockBehavior.Strict);
+            var controller = new FormController(formServiceMock.Object, fillingSessionMock.Object);
 
             // Act
             var actual = controller.Index() as RedirectToRouteResult;
@@ -68,14 +67,12 @@
             // Setup Mock FormService
             var formServiceMock = new Mock<IFormService>(MockBehavior.Strict);
             formServiceMock.Setup(s => s.Get(templateId)).Returns(template);
-            DependencyLocator.Locator.RegisterInstance(formServiceMock.Object);
 
             // Setup Mock FillingSessionService
             var fillingSessionServiceMock = new Mock<IFillingSessionService>(MockBehavior.Strict);
             fillingSessionServiceMock.Setup(s => s.Get(sessionId)).Returns(session);
-            DependencyLocator.Locator.RegisterInstance(fillingSessionServiceMock.Object);
 
-            var controller = new FormController();
+            var controller = new FormController(formServiceMock.Object, fillingSessionServiceMock.Object);
 
             // Act
             var actual = controller.Template(templateId, sessionId) as ViewResult;
@@ -87,6 +84,25 @@
             Assert.IsInstanceOfType(actualViewModel, typeof(UserForm));
             formServiceMock.Verify(s => s.Get(templateId));
             fillingSessionServiceMock.Verify(s => s.Get(sessionId));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotFoundException))]
+        public void FormControllerUnknownTemplateShouldReturnException()
+        {
+            // Arrange
+            var session = new FillingSessionMother().GetBasicSession();
+            var sessionId = session.Id;
+            var templateId = Guid.NewGuid();
+            var formServiceMock = new Mock<IFormService>(MockBehavior.Strict);
+            Form template = null;
+            formServiceMock.Setup(f => f.Get(It.IsAny<Guid>())).Returns(template);
+            var fillingSessionServiceMock = new Mock<IFillingSessionService>(MockBehavior.Strict);
+            fillingSessionServiceMock.Setup(s => s.Get(sessionId)).Returns(session);
+            var controller = new FormController(formServiceMock.Object, fillingSessionServiceMock.Object);
+
+            // Act
+            controller.Template(templateId, sessionId);
         }
     }
 }

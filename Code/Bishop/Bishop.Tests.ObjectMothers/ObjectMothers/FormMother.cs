@@ -9,7 +9,6 @@
         {
             var topic = new TopicMother()
                 .GetDefaultTopic("Topic Name");
-              
 
            var form = new FormBuilder()
                 .WithRandomId()

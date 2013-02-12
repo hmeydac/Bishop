@@ -1,5 +1,6 @@
 ﻿namespace Bishop.UI.Web.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
@@ -18,6 +19,12 @@
 
     public class HomeController : Controller
     {
+        private readonly IFormService formService;
+
+        public HomeController(IFormService formService)
+        {
+            this.formService = formService;
+        }
 
         // GET: /Home/
         public ActionResult Index()
@@ -28,8 +35,7 @@
 
         public IEnumerable<UserForm> GetViewModel()
         {
-            var formService = DependencyLocator.Locator.Resolve<IFormService>();
-            return formService.GetList().Select(Mapper.Map<UserForm>).ToArray();
+            return this.formService.GetList().Select(Mapper.Map<UserForm>).ToArray();
         }
 
         public ActionResult GenerateData()
@@ -51,7 +57,7 @@
 
         private void SaveData(FormsContext context)
         {
-            var form = new Form { Title = "Performance Review" };
+            var form = new Form { Id = Guid.NewGuid(), Title = "Performance Review" };
             var topic = new Topic { Title = "Competencias Core" };
             form.Topics.Add(topic);
             topic.Questions.Add(this.GetQuestion("Comunicación con sus pares"));
