@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Entities\Answer.cs" />
     <Compile Include="Entities\FillingSession.cs" />
+    <Compile Include="Entities\PublishedForm.cs" />
     <Compile Include="Entities\Question.cs" />
     <Compile Include="Entities\QuestionTypes.cs" />
     <Compile Include="Entities\Form.cs" />

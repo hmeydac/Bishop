@@ -46,7 +46,7 @@
 
             if (dataQuery == null)
             {
-                return this.GetDbSet<TEntity>();
+                return this.GetDbSet<TEntity>();    
             }
 
             return dataQuery.AsQueryable();
