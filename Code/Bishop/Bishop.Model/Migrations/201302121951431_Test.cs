@@ -68,17 +68,17 @@ namespace Bishop.Model.Migrations
         
         public override void Down()
         {
-            DropIndex("dbo.Answers", new[] { "Question_Id" });
-            DropIndex("dbo.Questions", new[] { "Topic_Id" });
-            DropIndex("dbo.Topics", new[] { "Form_Id" });
-            DropForeignKey("dbo.Answers", "Question_Id", "dbo.Questions");
-            DropForeignKey("dbo.Questions", "Topic_Id", "dbo.Topics");
-            DropForeignKey("dbo.Topics", "Form_Id", "dbo.Forms");
-            DropTable("dbo.FillingSessions");
-            DropTable("dbo.Answers");
-            DropTable("dbo.Questions");
-            DropTable("dbo.Topics");
-            DropTable("dbo.Forms");
+            this.DropIndex("dbo.Answers", new[] { "Question_Id" });
+            this.DropIndex("dbo.Questions", new[] { "Topic_Id" });
+            this.DropIndex("dbo.Topics", new[] { "Form_Id" });
+            this.DropForeignKey("dbo.Answers", "Question_Id", "dbo.Questions");
+            this.DropForeignKey("dbo.Questions", "Topic_Id", "dbo.Topics");
+            this.DropForeignKey("dbo.Topics", "Form_Id", "dbo.Forms");
+            this.DropTable("dbo.FillingSessions");
+            this.DropTable("dbo.Answers");
+            this.DropTable("dbo.Questions");
+            this.DropTable("dbo.Topics");
+            this.DropTable("dbo.Forms");
         }
     }
 }

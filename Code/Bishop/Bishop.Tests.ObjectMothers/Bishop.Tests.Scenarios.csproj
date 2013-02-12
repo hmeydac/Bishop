@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ObjectBuilders\AnswerBuilder.cs" />
+    <Compile Include="ObjectBuilders\CompanyBuilder.cs" />
     <Compile Include="ObjectBuilders\FillingSessionBuilder.cs" />
     <Compile Include="ObjectBuilders\FormBuilder.cs" />
     <Compile Include="ObjectBuilders\ObjectBuilder.cs" />

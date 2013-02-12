@@ -33,10 +33,21 @@
         {
             var container = new UnityContainer();
             DependencyInjectionConfig.RegisterDependencyResolver(container);
-            container.RegisterType<DbContext, FormsContext>();
-            container.RegisterType<IUnitOfWork, EntityFrameworkUnitOfWork>();
-            container.RegisterType<IFormService, FormService>();
-            container.RegisterType<IFillingSessionService, FillingSessionService>();
+            
+            container.RegisterType<DbContext, FormsContext>("FormContext");
+            container.RegisterType<DbContext, CustomerContext>("CustomerContext");
+
+            container.RegisterType<IUnitOfWork, EntityFrameworkUnitOfWork>("FormUnitOfWork", 
+                new InjectionConstructor(new ResolvedParameter<DbContext>("FormContext")));
+            container.RegisterType<IUnitOfWork, EntityFrameworkUnitOfWork>("CompanyUnitOfWork", 
+                new InjectionConstructor(new ResolvedParameter<DbContext>("CustomerContext")));
+
+            container.RegisterType<IFormService, FormService>(new InjectionConstructor(
+                new ResolvedParameter<IUnitOfWork>("FormUnitOfWork")));
+            container.RegisterType<IFillingSessionService, FillingSessionService>(
+                new InjectionConstructor(new ResolvedParameter<IUnitOfWork>("FormUnitOfWork")));
+            container.RegisterType<ICompanyService, CompanyService>(
+                new InjectionConstructor(new ResolvedParameter<IUnitOfWork>("CompanyUnitOfWork")));
         }
 
         private void MapModels()
@@ -45,6 +56,7 @@
             Mapper.CreateMap<Topic, Models.Forms.Topic>();
             Mapper.CreateMap<Question, Models.Forms.Question>();
             Mapper.CreateMap<Answer, Models.Forms.Answer>();
+            Mapper.CreateMap<Company, Models.Customer.Company>();
         }
     }
 }

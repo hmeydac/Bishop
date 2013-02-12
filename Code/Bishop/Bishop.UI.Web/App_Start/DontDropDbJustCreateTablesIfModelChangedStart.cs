@@ -13,7 +13,6 @@ namespace Bishop.UI.Web.App_Start
         {
             // Uncomment this line and replace CONTEXT_NAME with the name of your DbContext if you are 
             // using your DbContext to create and manage your database
-            //Database.SetInitializer(new DontDropDbJustCreateTablesIfModelChanged<FormsContext>());
         }
     }
 }

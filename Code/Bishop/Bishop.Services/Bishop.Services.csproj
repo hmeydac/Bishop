@@ -47,9 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompanyService.cs" />
     <Compile Include="EntityService.cs" />
     <Compile Include="FillingSessionService.cs" />
     <Compile Include="FormService.cs" />
+    <Compile Include="ICompanyService.cs" />
     <Compile Include="IFillingSessionService.cs" />
     <Compile Include="IFormService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
