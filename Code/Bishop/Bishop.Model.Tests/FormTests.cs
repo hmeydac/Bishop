@@ -105,7 +105,6 @@
         public void RemoveInexistentTopicShouldFail()
         {
             // Arrange
-            var expectedCount = 1;
             var falseTopic = new TopicBuilder().Build();
             var topic = new TopicBuilder().Build();
             var form = new FormBuilder().WithTopic(topic).Build();

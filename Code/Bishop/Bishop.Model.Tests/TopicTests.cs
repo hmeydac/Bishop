@@ -102,7 +102,6 @@
         public void RemoveInexistentQuestionShouldFail()
         {
             // Arrange
-            var expectedCount = 1;
             var falseQuestion = new QuestionBuilder().Build();
             var question = new QuestionBuilder().Build();
             var topic = new TopicBuilder().WithQuestion(question).Build();
